@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI产品经理 · 完整自学工具</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0f1117;--card:#1a1d27;--card2:#222639;--border:#2d3148;--text:#e4e6f0;--text2:#9499b3;--accent:#6c5ce7;--accent2:#a29bfe;--green:#00b894;--orange:#fdcb6e;--red:#e17055;--blue:#74b9ff;--radius:12px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:80px}
+
+.progress-bar-top{background:var(--card);border-bottom:1px solid var(--border);padding:12px 16px;position:sticky;top:0;z-index:50}
+.progress-bar-top .row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.progress-bar-top .stat{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text2)}
+.progress-bar-top .stat .val{font-weight:700;color:var(--accent2);font-size:15px}
+.progress-bar-top .bar-wrap{flex:1;min-width:120px;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.progress-bar-top .bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--green));transition:width .3s}
+
+.header{text-align:center;padding:20px 16px 0}
+.header h1{font-size:22px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header p{color:var(--text2);font-size:13px;margin-top:4px}
+
+.tabs{display:flex;gap:6px;padding:12px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab{flex:1;min-width:0;padding:10px 6px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card);color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:all .2s;white-space:nowrap}
+.tab:hover{border-color:var(--accent);color:var(--text)}
+.tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+.page{display:none;padding:0 16px 16px}
+.page.active{display:block}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px}
+.card-title{font-size:15px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card-title .icon{font-size:18px}
+
+.slider-group{margin-bottom:14px}
+.slider-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.slider-label span{font-size:13px;color:var(--text2)}
+.slider-label .score{font-size:15px;font-weight:700;color:var(--accent2);min-width:20px;text-align:right}
+input[type=range]{width:100%;height:6px;-webkit-appearance:none;appearance:none;background:var(--border);border-radius:3px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid var(--accent2)}
+.radar-wrap{display:flex;justify-content:center;margin:16px 0}
+.radar-wrap canvas{max-width:100%}
+.analysis{font-size:13px;color:var(--text2);line-height:1.8;padding:12px;background:var(--card2);border-radius:8px}
+.analysis strong{color:var(--orange)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 24px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent2)}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text2)}
+.btn-outline:hover{border-color:var(--accent);color:var(--text)}
+.btn-green{background:var(--green);color:#fff}
+.btn-green:hover{opacity:.85}
+.btn-sm{padding:6px 14px;font-size:12px}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+
+.filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.filter-bar select,.filter-bar button{padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:13px;cursor:pointer}
+.filter-bar select:focus{outline:none;border-color:var(--accent)}
+
+.quiz-area{min-height:200px}
+.quiz-timer{font-size:28px;font-weight:700;color:var(--accent2);text-align:center;margin:12px 0}
+.quiz-question{font-size:16px;font-weight:600;line-height:1.6;margin-bottom:16px}
+.quiz-meta{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.quiz-tag{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600}
+.tag-tech{background:#6c5ce733;color:var(--accent2)}
+.tag-product{background:#00b89433;color:var(--green)}
+.tag-biz{background:#fdcb6e33;color:var(--orange)}
+.tag-behavior{background:#e1705533;color:var(--red)}
+.tag-trend{background:#74b9ff33;color:var(--blue)}
+.quiz-answer{background:var(--card2);border-radius:8px;padding:14px;margin:12px 0;font-size:13px;line-height:1.8;color:var(--text2)}
+.quiz-answer strong{color:var(--green)}
+.stars{color:var(--orange);letter-spacing:2px}
+.score-row{display:flex;align-items:center;gap:12px;margin:12px 0}
+.score-row label{font-size:13px;color:var(--text2);white-space:nowrap}
+.score-row input[type=range]{flex:1}
+.score-row .val{font-size:14px;font-weight:700;color:var(--accent2);min-width:20px}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px;margin:16px 0}
+.stat-item{background:var(--card2);border-radius:8px;padding:14px;text-align:center}
+.stat-item .num{font-size:24px;font-weight:700;color:var(--accent2)}
+.stat-item .lbl{font-size:11px;color:var(--text2);margin-top:4px}
+
+.path-card{cursor:pointer;transition:all .2s}
+.path-card:hover{border-color:var(--accent)}
+.path-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.path-header .left{flex:1}
+.path-header .left strong{font-size:15px}
+.path-header .left .desc{font-size:12px;color:var(--text2);margin-top:2px}
+.path-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.badge{padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600}
+.badge-not-started{background:var(--border);color:var(--text2)}
+.badge-learning{background:var(--orange)33;color:var(--orange)}
+.badge-mastered{background:var(--green)33;color:var(--green)}
+.badge-quiz{background:var(--accent)33;color:var(--accent2)}
+.path-progress{height:6px;background:var(--border);border-radius:3px;margin:10px 0;overflow:hidden}
+.path-progress-bar{height:100%;border-radius:3px;transition:width .3s}
+.path-meta{display:flex;gap:12px;font-size:12px;color:var(--text2)}
+.path-detail{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.path-detail.open{display:block}
+
+.kp-item{padding:10px 0;border-bottom:1px solid var(--border)}
+.kp-item:last-child{border:none}
+.kp-header{display:flex;align-items:center;gap:8px;cursor:pointer}
+.kp-header .kp-check{width:18px;height:18px;border-radius:4px;border:2px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:12px;color:#fff}
+.kp-header .kp-check.checked{background:var(--green);border-color:var(--green)}
+.kp-header .kp-title{flex:1;font-size:13px;color:var(--text2);transition:color .2s}
+.kp-header .kp-title.learned{color:var(--green)}
+.kp-header .kp-arrow{font-size:10px;color:var(--text2);transition:transform .2s}
+.kp-header .kp-arrow.open{transform:rotate(90deg)}
+.kp-header .ask-ai-btn{padding:3px 8px;border-radius:4px;font-size:11px;border:1px solid var(--accent);color:var(--accent2);background:transparent;cursor:pointer;white-space:nowrap}
+.kp-header .ask-ai-btn:hover{background:var(--accent)22}
+.kp-content{display:none;padding:8px 0 4px 26px;font-size:13px;line-height:1.8;color:var(--text2)}
+.kp-content.open{display:block}
+.kp-content strong{color:var(--text)}
+
+.path-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+
+.checkin-section{margin-bottom:20px}
+.checkin-section h3{font-size:14px;font-weight:600;margin-bottom:10px;color:var(--accent2)}
+.kp-card{background:var(--card2);border-radius:8px;padding:12px;margin-bottom:8px;font-size:13px;line-height:1.6}
+.kp-card .kp-source{font-size:11px;color:var(--text2);margin-top:4px}
+.checkin-btn{width:100%;padding:14px;font-size:16px;margin:16px 0}
+.streak-display{text-align:center;padding:20px;margin:12px 0}
+.streak-num{font-size:48px;font-weight:700;color:var(--green)}
+.streak-label{font-size:13px;color:var(--text2);margin-top:4px}
+.history-list{max-height:300px;overflow-y:auto}
+.history-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
+.history-item:last-child{border:none}
+.history-date{color:var(--text2)}
+.history-status{padding:3px 8px;border-radius:4px;font-size:11px}
+.history-done{background:var(--green)22;color:var(--green)}
+.history-partial{background:var(--orange)22;color:var(--orange)}
+
+.footer{text-align:center;padding:24px 16px}
+.reset-btn{background:transparent;border:1px solid var(--red);color:var(--red);padding:8px 20px;border-radius:8px;font-size:13px;cursor:pointer}
+.reset-btn:hover{background:var(--red);color:#fff}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;max-width:420px;width:90%}
+.modal h3{margin-bottom:12px;font-size:16px}
+.modal p{font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.6}
+.modal-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+.ai-modal textarea{width:100%;min-height:120px;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:12px;color:var(--text);font-size:13px;line-height:1.6;resize:vertical;font-family:inherit}
+.ai-modal textarea:focus{outline:none;border-color:var(--accent)}
+.ai-modal .ai-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+
+.quiz-result{margin-top:16px}
+.quiz-result h3{text-align:center;margin-bottom:16px}
+.result-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.result-item:last-child{border:none}
+.result-item .wrong-mark{color:var(--red);font-weight:700;margin-left:8px}
+.result-item .kp-link{color:var(--accent2);cursor:pointer;text-decoration:underline;font-size:12px;margin-left:8px}
+
+.wrong-book-item{background:var(--card2);border-radius:8px;padding:12px;margin-bottom:8px}
+.wrong-book-item .q-text{font-size:13px;font-weight:600;margin-bottom:6px}
+.wrong-book-item .q-meta{display:flex;gap:8px;margin-bottom:6px}
+.wrong-book-item .q-score{font-size:12px;color:var(--red)}
+.wrong-book-item .q-kp{font-size:12px;color:var(--accent2);cursor:pointer;text-decoration:underline}
+
+.fade-in{animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:480px){.header h1{font-size:18px}.tab{font-size:12px;padding:8px 4px}.card{padding:12px}.quiz-timer{font-size:22px}.path-badges{gap:4px}}
+</style>
+</head>
+<body>
+
+<div class="progress-bar-top" id="top-progress">
+  <div class="row">
+    <div class="stat">📚 <span class="val" id="top-mastered">0</span>/11 板块</div>
+    <div class="bar-wrap"><div class="bar-fill" id="top-bar" style="width:0%"></div></div>
+    <div class="stat">🔥 <span class="val" id="top-streak">0</span>天</div>
+    <div class="stat">🎯 <span class="val" id="top-accuracy">0</span>%</div>
+  </div>
+</div>
+
+<div class="header">
+  <h1>AI产品经理 · 完整自学工具</h1>
+  <p>学习 · 自测 · 答疑 · 打卡</p>
+</div>
+
+<div class="tabs">
+  <div class="tab active" data-tab="path">学习路径</div>
+  <div class="tab" data-tab="quiz">面试自测</div>
+  <div class="tab" data-tab="wrong">错题本</div>
+  <div class="tab" data-tab="assess">能力自检</div>
+  <div class="tab" data-tab="checkin">每日打卡</div>
+</div>
+
+<div class="page active" id="page-path">
+  <div id="path-list"></div>
+</div>
+
+<div class="page" id="page-quiz">
+  <div class="card">
+    <div class="card-title"><span class="icon">🎯</span> 面试自测</div>
+    <div id="quiz-setup">
+      <div class="filter-bar">
+        <select id="q-category"><option value="all">全部类别</option><option value="tech">技术理解</option><option value="product">产品设计</option><option value="biz">商业化</option><option value="behavior">行为/项目</option><option value="trend">行业趋势</option></select>
+        <select id="q-diff"><option value="0">全部难度</option><option value="3">★★★</option><option value="4">★★★★</option><option value="5">★★★★★</option></select>
+        <button class="btn btn-primary btn-sm" onclick="startQuiz()">开始测试</button>
+      </div>
+      <div style="font-size:13px;color:var(--text2)">题库共30道题，选择类别和难度后开始</div>
+    </div>
+    <div id="quiz-play" class="quiz-area" style="display:none"></div>
+  </div>
+</div>
+
+<div class="page" id="page-wrong">
+  <div class="card">
+    <div class="card-title"><span class="icon">❌</span> 错题本</div>
+    <div id="wrong-list"></div>
+  </div>
+</div>
+
+<div class="page" id="page-assess">
+  <div class="card">
+    <div class="card-title"><span class="icon">📊</span> 八维能力自评</div>
+    <div id="sliders"></div>
+    <div class="radar-wrap"><canvas id="radar" width="320" height="320"></canvas></div>
+    <div class="analysis" id="analysis">拖动滑块进行自评，雷达图将实时更新</div>
+    <div style="text-align:center;margin-top:14px">
+      <button class="btn btn-primary" onclick="saveAssess()">保存自评</button>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-checkin">
+  <div class="card">
+    <div class="card-title"><span class="icon">🔥</span> 每日打卡</div>
+    <div class="streak-display">
+      <div class="streak-num" id="streak-num">0</div>
+      <div class="streak-label">连续打卡天数</div>
+    </div>
+  </div>
+  <div class="card checkin-section">
+    <h3>📖 今日知识点</h3>
+    <div id="today-kps"></div>
+  </div>
+  <div class="card checkin-section">
+    <h3>🎯 今日面试题</h3>
+    <div id="today-quiz"></div>
+  </div>
+  <div style="text-align:center">
+    <button class="btn btn-green checkin-btn" id="checkin-btn" onclick="doCheckin()">完成今日打卡</button>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <div class="card-title"><span class="icon">📋</span> 打卡历史</div>
+    <div class="history-list" id="history-list"></div>
+  </div>
+</div>
+
+<div class="footer">
+  <button class="reset-btn" onclick="showResetModal()">重置所有数据</button>
+</div>
+
+<div class="modal-overlay" id="reset-modal">
+  <div class="modal">
+    <h3>确认重置</h3>
+    <p>将清除所有自评分数、学习进度、打卡记录。此操作不可撤销。</p>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeResetModal()">取消</button>
+      <button class="btn btn-primary" style="background:var(--red)" onclick="doReset()">确认重置</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="ai-modal">
+  <div class="modal ai-modal">
+    <h3 id="ai-modal-title">问AI</h3>
+    <textarea id="ai-modal-text"></textarea>
+    <div class="ai-actions">
+      <button class="btn btn-primary btn-sm" onclick="copyAiPrompt()">📋 复制Prompt</button>
+      <button class="btn btn-outline btn-sm" onclick="openChatGPT()">🟢 ChatGPT</button>
+      <button class="btn btn-outline btn-sm" onclick="openKimi()">🔵 Kimi</button>
+      <button class="btn btn-outline btn-sm" onclick="closeAiModal()">关闭</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var DIMS = [
+  {id:'tech', name:'AI技术理解力', desc:'理解模型原理、技术边界判断'},
+  {id:'product', name:'产品设计力', desc:'需求转化、体验设计、场景洞察'},
+  {id:'biz', name:'商业化能力', desc:'商业闭环、成本控制、定价策略'},
+  {id:'data', name:'数据能力', desc:'数据闭环、标注管理、效果评估'},
+  {id:'translate', name:'技术翻译力', desc:'业务需求↔技术方案双向翻译'},
+  {id:'agent', name:'人机协同设计', desc:'20-60-20法则、Agent工作流设计'},
+  {id:'ethics', name:'伦理架构力', desc:'透明性、可控性、可逆性设计'},
+  {id:'interview', name:'面试实战力', desc:'项目表达、行为问题、压力应对'}
+];
+
+var QUESTIONS = [
+  {id:1,cat:'tech',q:'解释Transformer架构的核心原理及对大模型发展的影响',diff:3,ans:'注意力机制：允许模型关注输入序列中所有位置的关系，突破RNN的顺序依赖；并行计算：自注意力机制支持GPU并行训练，大幅提升效率；长文本依赖建模：解决长距离依赖问题；推动BERT/GPT发展：Transformer是现代大模型的基础架构',pathId:6},
+  {id:2,cat:'tech',q:'RAG vs Fine-tuning怎么选？各自适用场景？',diff:4,ans:'RAG适用场景：需要最新信息、需要可溯源的回答、知识频繁更新；Fine-tuning适用场景：需要改变模型行为风格、领域专业术语学习、特定任务优化；关键决策：常结合使用——先Fine-tuning改行为，再RAG补知识',pathId:7},
+  {id:3,cat:'tech',q:'什么是数据漂移？如何监控和应对？',diff:4,ans:'定义：输入数据的统计分布随时间发生变化，导致模型性能下降；监控方法：PSI指标监控（Population Stability Index）、特征分布监控、预测分布监控；应对策略：增量标注+模型重训练、数据版本管理、A/B测试验证新模型',pathId:7},
+  {id:4,cat:'tech',q:'解释模型幻觉，产品设计层面如何管理？',diff:3,ans:'幻觉定义：模型生成看似合理但实际错误的内容；产品设计管理：置信度展示（让用户知道AI的确定程度）、人工复核通道（关键决策必须人工确认）、免责声明（明确AI输出仅供参考）、规则引擎兜底（高风险场景用规则约束AI输出）',pathId:8},
+  {id:5,cat:'tech',q:'什么是MoE？优势和挑战？',diff:4,ans:'MoE（Mixture of Experts）：混合专家系统，通过路由机制动态选择激活哪些子模型（专家）；优势：参数效率高——总参数多但每次推理只激活部分，降低推理成本；挑战：路由策略复杂、负载均衡困难、训练不稳定、需要大量数据',pathId:7},
+  {id:6,cat:'tech',q:'如何平衡模型性能和推理成本？',diff:3,ans:'量化：4bit/8bit量化降低精度换取速度和成本；端侧+云侧混合部署：简单任务端侧处理，复杂任务云端处理；模型蒸馏与剪枝：大模型蒸馏为小模型，剪枝去除冗余参数；Prompt工程：优化提示词降低token消耗',pathId:7},
+  {id:7,cat:'product',q:'如何将用户需求转化为AI技术需求？以"智能客服情绪识别"为例',diff:3,ans:'需求拆解：识别情绪→分类情绪→触发响应策略；技术可行性评估：NLP情绪分类准确率、实时性要求、多语言支持；数据需求：标注数据集（情绪标签+对话文本）、badcase定义；指标定义：准确率、F1、响应延迟；MVP范围：先做正面/负面二分类，再扩展多分类',pathId:5},
+  {id:8,cat:'product',q:'如何设计AI产品的容错机制？',diff:4,ans:'置信度阈值：模型输出置信度低于阈值时触发备选方案；人工复核通道：关键场景必须有人工确认环节；规则引擎兜底：AI无法处理时回退到规则系统；反脆弱设计：IF置信度<85% THEN转人工，让系统在错误中学习而非崩溃',pathId:8},
+  {id:9,cat:'product',q:'AI产品需求优先级怎么排？结合Kano模型说明',diff:3,ans:'基本需求（必备型）：必须满足的底线功能，缺失则用户不满；性能需求（期望型）：功能越好用户越满意，如准确率提升；兴奋需求（魅力型）：超出预期的创新功能；AI特殊性：可行性评估需包含模型能力限制，不是所有需求技术都能实现',pathId:5},
+  {id:10,cat:'product',q:'如何设计AI Agent的多级工作流？',diff:4,ans:'20-60-20法则：20%人工启动→60%AI自主处理→20%人工兜底；初级AI处理80%常规任务；复杂场景触发专家模型；争议/高风险场景转人工；知识图谱持续优化：每次人工处理的结果回流到知识库',pathId:11},
+  {id:11,cat:'product',q:'如何评估AI产品场景是否是"黄金场景"？',diff:3,ans:'痛点真实性：用户是否真的在用低效方式解决此问题；AI不可替代性：AI相比传统方案是否有数倍体验提升；商业闭环可量化：能否清晰算出投入产出比',pathId:5},
+  {id:12,cat:'product',q:'AI产品从Demo到规模化营收的3个必破卡点？',diff:4,ans:'场景闭环：从单点功能到全链路闭环，用户不会为半成品付费；单位经济模型：从烧钱到盈利可复制，推理成本必须可控；规模化交付：从定制化到标准化，否则无法规模化',pathId:9},
+  {id:13,cat:'biz',q:'B端和C端AI产品的商业化策略有什么不同？',diff:3,ans:'B端策略：按成果付费、ROI可视化、续费率80%+、决策链长但客单价高；C端策略：订阅制、付费率1-4%、社交传播驱动增长、情绪价值定价；关键差异：B端卖效率，C端卖体验',pathId:9},
+  {id:14,cat:'biz',q:'如何控制AI产品的推理成本？',diff:3,ans:'端侧+云侧混合部署：简单请求端侧处理，复杂请求云端处理；量化：4bit/8bit量化降低计算量；Prompt工程：优化提示词减少token消耗；案例：某产品月推理成本从2000元降至300元',pathId:9},
+  {id:15,cat:'biz',q:'AI产品的定价逻辑是什么？',diff:4,ans:'B端定价：按节省人力成本定价，客户能算出ROI；C端定价：按情绪价值/效率提升定价，用户愿为体验付费；API定价：按token计费，输入输出分别定价；定价陷阱：不能按成本定价，要按价值定价',pathId:9},
+  {id:16,cat:'biz',q:'为什么67%的AI创新项目失败？核心原因？',diff:3,ans:'核心原因：商业闭环缺失；技术可行≠商业可行；具体表现：缺场景闭环（技术有了但没人用）、经济模型不通（推理成本高于收入）、伪需求（想象的需求非真实需求）',pathId:9},
+  {id:17,cat:'biz',q:'AI产品ToB优先的逻辑是什么？',diff:3,ans:'有算法没数据→ToB获取数据：B端客户有数据积累；获客成本高→B端热启动：B端一个客户就能覆盖成本；技术不成熟→B端容错率高：B端愿意为早期技术付费并包容不足',pathId:5},
+  {id:18,cat:'biz',q:'如何设计AI产品的数据飞轮？',diff:4,ans:'飞轮逻辑：用户行为数据→优化模型→提升体验→更多用户→更多数据；关键要素：闭环（数据必须回流到模型优化）、自动化（数据收集-标注-训练-部署全链路自动化）；冷启动：先用规则/人工标注积累初始数据，再切换到自动飞轮',pathId:9},
+  {id:19,cat:'behavior',q:'描述你做过的最成功的AI产品，成功指标是什么？',diff:3,ans:'STAR法则：Situation背景→Task任务→Action行动→Result结果；指标需量化：自动解决率+15%、人工转接率-20%、用户满意度+12%等；验证方式：A/B测试验证，而非主观判断',pathId:10},
+  {id:20,cat:'behavior',q:'你在AI项目中遇到的最大困难是什么？如何解决的？',diff:4,ans:'避坑：不能只说"协调资源难"这种万能答案；必须包含：技术决策困难+分析过程+权衡逻辑+结果验证；体现深度：展示你在不确定性下做决策的能力',pathId:10},
+  {id:21,cat:'behavior',q:'如果让你重来，你会在哪个节点做出不一样的判断？',diff:5,ans:'必须说具体决策：不能泛泛而谈；反思逻辑：当时为什么做那个决定、信息差在哪里；替代方案：如果重来会怎么做、为什么；预期差异：新方案预期会有什么不同结果；核心：体现复盘深度而非后悔',pathId:10},
+  {id:22,cat:'behavior',q:'如何在技术不确定性很高的情况下推进项目？',diff:4,ans:'不确定性拆分：将大不确定性拆成可验证的小不确定性；中间节点管理：设置可验证的里程碑，逐步降低不确定性；盖尔定律：从简单系统开始，逐步演进到复杂系统；可演进性设计：架构设计时预留扩展空间',pathId:4},
+  {id:23,cat:'behavior',q:'你如何辨别"想象的需求"和"真实需求"？',diff:3,ans:'技术能否稳定支持：如果技术做不到，需求就是想象；体验是否超越原产品数倍：只有数倍提升才能改变用户习惯；用户是否已在用低效方式解决：如果没人尝试解决，可能不是真需求',pathId:5},
+  {id:24,cat:'behavior',q:'举例说明你做过的失败决策，学到了什么？',diff:4,ans:'必须说自己的决策：不能推给团队或环境；分析原因：决策时的信息、判断逻辑、盲区；提炼方法论：从失败中抽象出可复用的原则；后续应用：这个方法论在后续项目中如何应用',pathId:10},
+  {id:25,cat:'trend',q:'2025-2026年AI产品经理最核心的能力变化是什么？',diff:3,ans:'从功能设计→能力探索+价值架构：不再是堆功能，而是探索AI能力边界；概率思维框架：接受不确定性，设计容错机制；技术-业务双向翻译：能将业务需求翻译为技术方案，也能将技术限制翻译为业务语言',pathId:1},
+  {id:26,cat:'trend',q:'71%的AI PM岗位不需要真懂AI，你怎么看？',diff:3,ans:'数据来源：200份JD拆解结果；识别方法：看JD是否有"模型评估/badcase分析"等关键词；核心观点：行业know-how>技术深度，但完全不懂技术会失去判断力',pathId:1},
+  {id:27,cat:'trend',q:'大模型时代AI PM和传统PM的本质差异？',diff:3,ans:'决策逻辑：确定性→概率性（传统PM做确定性功能，AI PM管理概率性输出）；核心驱动：功能→数据-模型-场景（传统PM驱动功能迭代，AI PM驱动数据飞轮）；成功定义：DAU→数据飞轮（传统看DAU，AI看数据质量和飞轮效应）',pathId:1},
+  {id:28,cat:'trend',q:'你怎么看AI Agent的商业化前景？',diff:4,ans:'现状：技术狂飙但商业窘境；黄金场景三法则：痛点真实+AI不可替代+商业闭环可量化；路径：从单点功能→全链路闭环；关键：Agent需要找到真正的黄金场景，而非技术自嗨',pathId:11},
+  {id:29,cat:'trend',q:'如何看待AI产品的伦理问题？',diff:3,ans:'三大原则：透明性（用户知道在和AI交互）、可控性（人可以随时接管）、可逆性（AI的决策可以被撤销）；合规框架：欧盟AI法案+中国合规指南；实践方法：偏见检测+合规沙盒',pathId:8},
+  {id:30,cat:'trend',q:'你认为AI产品经理这个岗位3年后会怎样？',diff:4,ans:'分化趋势：平台PM（做AI基础设施）/应用PM（做AI应用）/行业PM（做行业AI解决方案）；护城河：行业know-how是真正的护城河，而非AI技术本身；终局：会用AI的PM替代不会用的PM',pathId:1}
+];
+
+var CAT_NAMES = {tech:'技术理解',product:'产品设计',biz:'商业化',behavior:'行为/项目',trend:'行业趋势'};
+var CAT_CLASSES = {tech:'tag-tech',product:'tag-product',biz:'tag-biz',behavior:'tag-behavior',trend:'tag-trend'};
+
+var PATHS = [
+  {id:1,name:'AI产业结构与PM定位',desc:'理解AI产业链各环节及PM的定位与价值',qIds:[25,26,27],kps:[
+    {title:'AI产业结构三层模型',content:'<strong>行业+AI</strong>：重行业，AI赋能传统行业升级（如金融+AI、医疗+AI）<br><strong>AI+行业</strong>：重AI，AI催生新行业（如自动驾驶、AI绘画）<br><strong>基础平台</strong>：提供AI技术平台（如大模型API、算力平台）<br>三层模型决定了PM在不同层级需要不同的核心能力：行业+AI需要行业深度，AI+行业需要技术敏感度，基础平台需要生态构建力'},
+    {title:'AI PM狭义vs广义定义',content:'<strong>狭义AI PM</strong>：直接应用语义/语音/视觉/ML 4个领域的产品经理<br><strong>广义AI PM</strong>：间接涉及AI或不成熟细分领域的PM<br>区分意义：狭义需要深度技术理解，广义更侧重行业洞察+AI应用能力'},
+    {title:'AI PM四大核心能力',content:'1. <strong>找准商业变现闭环</strong>：技术再好没有商业闭环也是空谈<br>2. <strong>把控产品需求</strong>：在技术可行性和用户需求间找到平衡<br>3. <strong>与技术互相推动</strong>：不是被动等技术开发，而是推动技术方向<br>4. <strong>获取用户信任</strong>：AI产品天然有不确定性，信任是使用的前提'},
+    {title:'AI PM vs 传统PM本质差异',content:'<strong>决策逻辑</strong>：确定性→概率性（传统PM做确定性功能，AI PM管理概率性输出）<br><strong>核心驱动</strong>：功能→数据-模型-场景（传统PM驱动功能迭代，AI PM驱动数据飞轮）<br><strong>关键挑战</strong>：需求优先级→数据闭环（传统PM排需求优先级，AI PM建数据闭环）<br><strong>成功定义</strong>：DAU→数据飞轮（传统看DAU，AI看数据质量和飞轮效应）'},
+    {title:'71%的"AI PM"岗位不需要真懂AI',content:'数据来源：200份JD拆解结果<br><strong>真AI PM 29%</strong>：JD含"模型评估/badcase分析/技术方案评审"<br><strong>半AI PM 42%</strong>：涉及AI但不深入<br><strong>伪AI PM 29%</strong>：挂AI名做传统PM<br><strong>识别方法</strong>：看JD有无"模型评估/badcase分析/技术方案评审"关键词'}
+  ]},
+  {id:2,name:'系统化思维与物理思维',desc:'用系统思维和物理思维分析AI产品问题',qIds:[22],kps:[
+    {title:'核心原则：用简单模拟复杂',content:'不用复杂追求复杂。AI产品最大的陷阱就是一上来就做复杂系统。<br>核心思想：<strong>简单系统→验证→叠加条件→复杂系统</strong><br>这是盖尔定律的思维方式延伸'},
+    {title:'经验vs方法',content:'<strong>经验</strong>：易学、易用、过时快。在特定场景有效但无法迁移<br><strong>方法</strong>：难学但泛用性强。可以跨场景使用<br><strong>判断标准</strong>：能否跨场景使用？能=方法，不能=经验<br>AI领域技术迭代快，经验容易过时，方法才是护城河'},
+    {title:'有方向的思考',content:'三步法：<br>1. <strong>先划定思考范围</strong>：不要漫无边际地想<br>2. <strong>在范围内猜测</strong>：基于已有信息做假设<br>3. <strong>不断缩小范围</strong>：通过验证排除错误假设<br>类比：像二分查找一样逐步逼近答案'},
+    {title:'物理思维（最小子系统法）',content:'从简单到复杂逐步叠加条件：<br>1. 找到最简可运行的子系统<br>2. 不断去掉弱关联子系统<br>3. 直到子系统间联系极强=核心框架<br><strong>案例1</strong>：柯达被打印机打败（不是数码相机）——蒸发掉相同点，找到真正变量<br><strong>案例2</strong>：iPhone vs 诺基亚——蒸发掉相同点=物理键盘vs虚拟键盘'},
+    {title:'精确定义',content:'<strong>能把一件事定义到可以在任何场景复现的地步=学会了</strong><br>这是检验是否真正理解的终极标准<br>如果只能描述不能精确定义，说明还停留在经验层面'},
+    {title:'案例深度解析',content:'<strong>柯达案例</strong>：大家以为柯达死于数码相机，实际死于打印机——蒸发掉"拍照"这个相同点，真正的变量是"影像的输出方式"<br><strong>iPhone案例</strong>：蒸发掉"手机功能"这个相同点，真正的变量是"输入方式"——物理键盘vs虚拟键盘，这决定了整个产品形态'}
+  ]},
+  {id:3,name:'四大AI思维与心力四力',desc:'掌握AI产品经理的四大思维模型和心力框架',qIds:[23,27],kps:[
+    {title:'多样化思维',content:'<strong>多角度性</strong>：从不同视角考察同一需求<br><strong>多层次性</strong>：从不同抽象层次理解问题<br><strong>互为中介性</strong>：不同角度之间可以互相验证和补充<br>应用：评估AI需求时，同时从用户、技术、商业三个角度审视'},
+    {title:'差异化思维',content:'<strong>核心</strong>：行业内独树一帜<br><strong>先发特质</strong>：率先进入某个细分领域建立壁垒<br><strong>后发特质</strong>：在已有市场中找到差异化切入点<br><strong>代价</strong>：差异化可能以成本为代价，需要权衡<br>AI领域差异化关键：找到技术优势与场景的交叉点'},
+    {title:'穿透思维',content:'<strong>横向穿透</strong>：技术→供应链，将AI技术能力横向迁移到不同行业<br><strong>纵向穿透</strong>：技术→行业深挖，在单一行业不断深入<br><strong>案例</strong>：智能电视→语音遥控→MEMC画质→老年戏曲优化<br>从电视硬件穿透到语音交互，再穿透到画质技术，最终穿透到老年人群需求'},
+    {title:'大道思维',content:'<strong>核心</strong>：赛道足够长足够宽，做改变社会形态的产品<br><strong>判断标准</strong>：这个赛道5-10年后还存在吗？规模能扩大10倍吗？<br><strong>反面</strong>：做"小而美"的AI工具可能很赚钱，但不具备大道思维的特征<br>AI领域的大道：寻找AI能根本性改变社会运作方式的场景'},
+    {title:'心力四力',content:'<strong>认知力（致知力）</strong>：辨别伪需求，在信息过载中找到真问题<br><strong>方法论力（事上练）</strong>：困境中磨炼，不是纸上谈兵而是实战中提炼方法<br><strong>迭代力（初心不动随机而动）</strong>：不以昨日眼光理解今日用户，保持初心但灵活迭代<br><strong>验证力（知行合一）</strong>：从用户增长验证，不是自嗨而是用数据说话'},
+    {title:'案例：淘宝vs易趣',content:'<strong>方法论力的经典案例</strong><br>易趣：照搬美国eBay模式，收费+大卖家优先<br>淘宝：免费开店+扶持中小卖家+支付宝担保交易<br><strong>关键差异</strong>：淘宝不是在易趣的框架内竞争，而是重新定义了电商方法论<br><strong>启示</strong>：AI产品同样需要跳出传统产品框架，用新方法论定义竞争维度'}
+  ]},
+  {id:4,name:'可演进性与盖尔定律',desc:'理解产品可演进性设计原则和盖尔定律',qIds:[22],kps:[
+    {title:'盖尔定律',content:'<strong>复杂系统必须从切实可行的简单系统开始，无法自顶向下设计</strong><br>这是AI产品最重要的设计原则之一<br>反面案例：很多AI项目失败就是因为一上来就想做全功能系统<br>正面案例：ChatGPT从简单的对话开始，逐步演化为多模态平台'},
+    {title:'AI产品交付四层',content:'<strong>零件→工具→解决方案→系统</strong><br>零件：单个AI能力（如语音识别API）<br>工具：组合多个零件解决特定问题（如语音转写工具）<br>解决方案：工具+流程+服务（如会议纪要解决方案）<br>系统：多解决方案协同（如企业智能办公系统）<br><strong>好的产品是总结出来的，不是设计出来的</strong>'},
+    {title:'不确定性拆分',content:'<strong>把大的不确定性切成小的</strong><br>AI项目最大的风险不是技术不行，而是不确定性太大<br>方法：将"模型能否达到效果"拆分为"数据够不够→标注质量行不行→模型选型对不对→指标定义合理吗"<br>每个小不确定性都可以独立验证'},
+    {title:'必须有业务基础系统',content:'<strong>AI是蛋糕上的樱桃，基础业务系统才是蛋糕本身</strong><br>没有基础业务系统的AI产品=空中楼阁<br>基础业务系统包括：用户系统、数据采集、业务流程、反馈机制<br>AI只有在基础系统之上才能发挥价值'},
+    {title:'中间节点管理',content:'<strong>最大风险不是技术，是耐心耗尽前能否达到中间节点</strong><br>中间节点=可验证的阶段性成果<br>方法：设置明确的中间节点，每个节点都有可量化的成功标准<br>关键：让利益相关方看到进展，维持信心和资源投入'},
+    {title:'场景跃迁',content:'<strong>AI产品发展过程中会跃迁到新场景</strong><br>原因：AI能力提升后，原本不适用的场景变得可行<br>案例：语音识别从命令控制→语音助手→会议纪要→实时翻译<br>启示：产品设计要预留场景扩展空间'},
+    {title:'康威定律',content:'<strong>产品结构映射团队结构，可演化的产品需要可演化的团队</strong><br>如果团队是瀑布式开发，产品很难快速迭代<br>如果团队是微服务架构，产品更容易模块化演进<br>AI产品尤其需要：数据团队、算法团队、产品团队紧密协作的团队结构'},
+    {title:'案例：雅虎与Pinterest',content:'<strong>雅虎</strong>：分类目录→门户。从简单的网站目录开始，逐步演化为综合门户<br><strong>Pinterest</strong>：电商导购→图片分享→导购。从电商工具开始，发现用户更喜欢图片分享，最终回到导购但形态完全不同<br><strong>共同规律</strong>：都不是一开始就设计成最终形态，而是从简单系统逐步演进'}
+  ]},
+  {id:5,name:'需求发现与场景评估',desc:'掌握AI产品需求发现和场景评估方法论',qIds:[9,11,17,23],kps:[
+    {title:'数据挖掘6类任务',content:'1. <strong>关联分析</strong>：发现数据间的关联规则（如购物篮分析）<br>2. <strong>序列发现</strong>：发现时间序列中的模式（如用户行为路径）<br>3. <strong>聚类分析</strong>：将相似对象分组（如用户分群）<br>4. <strong>分类</strong>：将对象分到预定义类别（如垃圾邮件识别）<br>5. <strong>偏差检测</strong>：发现异常数据（如欺诈检测）<br>6. <strong>预测</strong>：预测未来值（如销量预测）'},
+    {title:'好的AI业务场景4个条件',content:'1. <strong>有大量数据</strong>：AI需要数据喂养，没有数据就没有AI<br>2. <strong>充分体现个性化需求</strong>：AI的价值在于个性化，千人一面用规则就行<br>3. <strong>用户能反馈结果</strong>：没有反馈就没有学习，数据飞轮转不起来<br>4. <strong>技术可实现且成本可控</strong>：技术天花板和成本底线都要评估'},
+    {title:'AI产品ToB优先逻辑',content:'<strong>有算法没数据→ToB获取数据</strong>：B端客户有数据积累<br><strong>获客成本高→B端热启动</strong>：B端一个客户就能覆盖成本<br><strong>技术不成熟→B端容错率高</strong>：B端愿意为早期技术付费并包容不足<br>经典路径：先ToB积累数据→打磨技术→再ToC规模化'},
+    {title:'需求落地要点',content:'<strong>不需要100%解决</strong>：AI产品追求的是"足够好"而非"完美"<br><strong>分类规则直接影响模型效果</strong>：分类定义就是产品定义<br><strong>分类太细→数据少</strong>：每个类别样本不够，模型学不好<br><strong>分类太大→有歧义</strong>：一个类别包含太多不同含义，模型无法区分<br>关键：找到分类粒度的最佳平衡点'},
+    {title:'黄金场景识别三法则',content:'1. <strong>痛点真实性</strong>：用户是否真的在用低效方式解决此问题？如果没人尝试解决，可能不是真痛点<br>2. <strong>AI不可替代性</strong>：AI相比传统方案是否有数倍体验提升？如果只提升20%，不值得用AI<br>3. <strong>商业闭环可量化</strong>：能否清晰算出投入产出比？如果ROI算不清，商业模式不成立'},
+    {title:'AI产品从"人工智障"开始',content:'<strong>不要直奔主题，直奔主题90%会失败</strong><br>原因：AI能力边界不清晰，直接做最终产品风险极高<br>正确路径：从简单场景开始→验证技术可行性→逐步扩展<br>"人工智障"阶段：先用规则+人工覆盖，验证场景价值后再引入AI<br>案例：智能客服先用关键词匹配，验证用户需求后再上NLP模型'}
+  ]},
+  {id:6,name:'AI技术知识速查',desc:'AI产品经理必须了解的核心技术概念',qIds:[1],kps:[
+    {title:'语音交互评价指标体系',content:'<strong>ASR（语音识别）</strong>：WER（词错率）/ SER（句错率）<br><strong>语音唤醒</strong>：唤醒率 / 误唤醒率<br><strong>NLP（自然语言处理）</strong>：精确率 / 召回率 / F1<br><strong>TTS（语音合成）</strong>：MOS（平均意见分）/ ABX测试<br><strong>对话系统</strong>：CPS（每秒字符数）/ 完成度 / 求助人工比例'},
+    {title:'数据标注工作流程',content:'<strong>标注员→审核员→管理员</strong>三级体系<br><strong>关键指标</strong>：精确率+召回率<br><strong>产品核心职责</strong>：制定分类边界规则<br>标注质量直接决定模型效果，产品经理需要：<br>1. 定义清晰的标注规范<br>2. 设计标注质检流程<br>3. 处理标注歧义case'},
+    {title:'深度学习核心算法',content:'<strong>CNN（卷积神经网络）</strong>：图像领域，局部特征提取<br><strong>RNN（循环神经网络）</strong>：序列数据，有时间记忆<br><strong>LSTM（长短期记忆网络）</strong>：长序列，解决RNN梯度消失<br><strong>GANs（生成对抗网络）</strong>：生成任务，生成器vs判别器<br><strong>RL（强化学习）</strong>：决策任务，通过奖励信号学习'},
+    {title:'NLP是AI发展核心瓶颈',content:'<strong>深度学习对语音/图像提升10-20%，对NLP只提升1-2%</strong><br>原因：语言的模糊性和上下文依赖远超图像<br>影响：NLP相关产品需要更多规则兜底和人工审核<br>大模型突破：Transformer架构大幅提升了NLP能力，但幻觉问题仍然存在<br>产品启示：NLP产品的容错设计比图像产品更重要'}
+  ]},
+  {id:7,name:'大模型技术选型',desc:'大模型技术选型的决策框架和实践方法',qIds:[2,3,5,6],kps:[
+    {title:'Prompt Engineering',content:'<strong>快速适配多任务，成本低，零样本/少样本即可</strong><br>适用场景：快速验证、多任务适配、资源有限<br>技巧：清晰的指令+示例+输出格式约束<br>优势：无需训练，迭代快<br>局限：无法改变模型深层行为，对领域术语理解有限'},
+    {title:'RAG（检索增强生成）',content:'<strong>需要最新信息+可溯源，中成本</strong><br>核心组件：向量数据库选型+检索策略+重排序<br>适用场景：知识库问答、需要引用来源、信息频繁更新<br>关键决策：向量数据库选型（Milvus/Pinecone/Weaviate）<br>局限：检索质量决定回答质量，无法改变模型行为'},
+    {title:'Fine-tuning',content:'<strong>垂直领域深度适配，高成本</strong><br>需要：大量标注数据+计算资源<br>适用场景：领域专业术语学习、改变模型输出风格/格式、特定任务深度优化<br>关键：数据质量>数据数量，1000条高质量数据>10000条低质量数据'},
+    {title:'LoRA',content:'<strong>低成本微调，只更新少量参数</strong><br>原理：在原模型旁添加低秩矩阵，只训练这些新增参数<br>优势：显存需求低、训练快、可插拔切换<br>适用场景：资源有限时的领域适配、多任务快速切换<br>局限：适应能力不如全量微调'},
+    {title:'MoE（混合专家系统）',content:'<strong>千亿级模型部署，路由策略复杂，推理延迟高</strong><br>原理：通过路由机制动态选择激活哪些子模型（专家）<br>优势：参数效率高——总参数多但每次推理只激活部分<br>挑战：路由策略复杂、负载均衡困难、训练不稳定'},
+    {title:'量化（4bit/8bit）',content:'<strong>降低推理成本，精度损失vs成本节约的权衡</strong><br>4bit量化：成本最低，精度损失较大<br>8bit量化：成本适中，精度损失较小<br>决策框架：对精度敏感的任务用8bit，对成本敏感的用4bit<br>实战：量化后通常需要评估关键指标下降幅度'},
+    {title:'RAG vs Fine-tuning决策框架',content:'<strong>需最新信息/可溯源→RAG</strong><br><strong>需改模型行为/领域术语→Fine-tuning</strong><br><strong>常结合使用</strong>：先Fine-tuning改行为，再RAG补知识<br>决策树：<br>1. 信息是否频繁更新？是→RAG<br>2. 是否需要改变模型行为？是→Fine-tuning<br>3. 两者都需要？→先Fine-tuning再RAG'},
+    {title:'数据漂移与模型漂移',content:'<strong>数据漂移</strong>：输入分布变化（PSI指标监控）<br>PSI>0.25表示显著漂移，需要重新训练<br><strong>模型漂移</strong>：性能随时间下降（实时跟踪核心指标）<br>监控方法：核心指标看板+自动告警<br>应对策略：增量标注+模型重训练+数据版本管理'}
+  ]},
+  {id:8,name:'模型幻觉与容错设计',desc:'AI产品容错机制设计的核心方法论',qIds:[4,8,29],kps:[
+    {title:'模型幻觉',content:'<strong>生成看似合理但错误的内容，是大模型核心风险</strong><br>类型：事实性幻觉（编造不存在的事实）/ 逻辑性幻觉（推理过程错误）<br>原因：训练数据不完整、模型过度自信、缺乏事实核查机制<br>影响：用户信任崩塌、法律合规风险、商业损失'},
+    {title:'产品设计层面应对',content:'<strong>置信度展示</strong>：让用户知道AI的确定程度<br><strong>人工复核通道</strong>：关键决策必须人工确认<br><strong>免责声明</strong>：明确AI输出仅供参考<br><strong>渐进式展示</strong>：先展示高置信度内容，低置信度内容折叠'},
+    {title:'技术层面应对',content:'<strong>RAG检索增强</strong>：用真实数据约束模型输出<br><strong>规则引擎兜底</strong>：高风险场景用规则约束AI输出<br><strong>多模型交叉验证</strong>：多个模型独立输出，结果一致才展示<br><strong>事实核查链</strong>：在生成后增加事实核查步骤'},
+    {title:'反脆弱设计',content:'<strong>IF {AI输出置信度<85%} THEN {转人工审核}</strong><br><strong>IF {涉及生命财产安全} THEN {强制双AI交叉验证}</strong><br>核心理念：不是消除错误，而是让系统在错误中变得更强<br>每次人工纠正的结果都回流到训练数据，形成正循环'},
+    {title:'关键指标',content:'<strong>幻觉率</strong>：AI输出中包含错误信息的比例<br><strong>人工接管率</strong>：需要人工介入的比例<br><strong>用户纠错率</strong>：用户主动纠正AI输出的比例<br>目标：幻觉率<5%，人工接管率<15%，用户纠错率<10%'},
+    {title:'Chatbot技术已ready，缺的是App',content:'<strong>缺的不是技术，而是在正确场景使用</strong><br>Chatbot技术已经成熟，但大多数Chatbot产品失败了<br>原因：场景不对、体验不佳、没有解决真问题<br>启示：不要做"通用Chatbot"，要做"特定场景的AI助手"<br>成功案例：GitHub Copilot（编码场景）、Midjourney（绘画场景）'}
+  ]},
+  {id:9,name:'商业化落地与成本控制',desc:'AI产品商业化策略和成本控制方法',qIds:[12,13,14,15,16,18],kps:[
+    {title:'从Demo到规模化营收3个必破卡点',content:'1. <strong>场景闭环</strong>：单点→全链路。用户不会为半成品付费<br>2. <strong>单位经济模型</strong>：烧钱→盈利可复制。推理成本必须可控<br>3. <strong>规模化交付</strong>：定制→标准化。否则无法规模化<br>每个卡点都是一道生死线，跨不过去就无法规模化'},
+    {title:'B端vs C端策略',content:'<strong>B端</strong>：按成果付费+ROI可视化+续费率80%+<br><strong>C端</strong>：订阅制+付费率1-4%+社交传播<br><strong>关键差异</strong>：B端卖效率，C端卖体验<br>B端决策链长但客单价高，C端决策快但付费率低<br>AI产品常见路径：先B端验证→再C端规模化'},
+    {title:'定价逻辑',content:'<strong>B端</strong>：按节省人力成本定价，客户能算出ROI<br><strong>C端</strong>：按情绪价值/效率提升定价，用户愿为体验付费<br><strong>API</strong>：按token计费，输入输出分别定价<br><strong>定价陷阱</strong>：不能按成本定价，要按价值定价<br>案例：AI客服按节省的客服人力成本定价，而非按推理成本定价'},
+    {title:'成本控制实战',content:'<strong>端侧+云侧混合部署</strong>：月推理成本2000→300元<br><strong>Prompt工程降低数据需求</strong>：10万→8000张标注数据<br><strong>AI客服单次交互成本需低于人工30%</strong><br>方法：量化+蒸馏+缓存+批量处理<br>关键：成本控制不是一次性优化，而是持续运营'},
+    {title:'67%的AI创新项目因商业闭环缺失失败',content:'<strong>技术可行≠商业可行</strong><br>具体表现：<br>1. 缺场景闭环：技术有了但没人用<br>2. 经济模型不通：推理成本高于收入<br>3. 伪需求：想象的需求非真实需求<br>核心教训：先验证商业闭环，再投入技术开发'},
+    {title:'AI=数据+算法+算力但落地关键在场景',content:'<strong>技术三要素</strong>：数据+算法+算力<br><strong>落地关键</strong>：场景<br>没有场景，三要素都是成本<br>有了场景，三要素才变成资产<br>产品经理的核心价值：找到场景，让三要素产生商业价值'}
+  ]},
+  {id:10,name:'面试实战与行为问题',desc:'AI PM面试的行为问题和项目表达技巧',qIds:[19,20,21,24],kps:[
+    {title:'面试官核心验证三件事',content:'1. <strong>真正参与过AI项目</strong>：不是旁观者，是决策者<br>2. <strong>能把AI技术能力和业务目标打通</strong>：不是只会术语，能说清技术如何服务业务<br>3. <strong>思维方式匹配不确定性</strong>：AI项目充满不确定性，面试官要看你是否能驾驭'},
+    {title:'三大致命失误',content:'1. <strong>术语堆砌</strong>：追问就答不上来。面试官一深挖就露馅<br>2. <strong>有结果没过程</strong>：说不出中间困难。只讲成功不讲挑战，缺乏深度<br>3. <strong>不认真准备行为问题</strong>：行为问题占面试50%+，很多人却只准备技术题'},
+    {title:'STAR法则升级版',content:'<strong>Situation+Task+Action+Result</strong><br>AI面试还需加两个维度：<br><strong>决策逻辑</strong>：为什么做这个决定？当时的权衡是什么？<br><strong>如果重来</strong>：现在回头看，你会怎么做？体现了什么方法论？<br>升级版=STAR+DL（Decision Logic）+WR（What if Redo）'},
+    {title:'行为问题准备要点',content:'<strong>必须说自己的决策</strong>：非团队失误，非环境因素<br><strong>分析原因</strong>：决策时的信息、判断逻辑、盲区<br><strong>提炼方法论</strong>：从具体事件中抽象出可复用的原则<br><strong>后续应用</strong>：这个方法论在后续项目中如何应用<br>关键：体现成长性，不是展示完美'},
+    {title:'面试高频题分类',content:'<strong>技术理解25题</strong>：模型原理、技术选型、效果评估<br><strong>产品设计20题</strong>：需求分析、场景评估、容错设计<br><strong>项目经验15题</strong>：项目复盘、困难克服、数据闭环<br><strong>行为压力10题</strong>：失败决策、团队冲突、不确定性应对<br><strong>行业趋势10题</strong>：技术发展、商业前景、岗位认知'}
+  ]},
+  {id:11,name:'AI Agent落地实战',desc:'AI Agent的设计方法论和商业化路径',qIds:[10,28],kps:[
+    {title:'Agent项目失败五大原因',content:'1. <strong>技术驱动幻觉</strong>：拿锤子找钉子，先有技术再找场景<br>2. <strong>场景颗粒度失配</strong>：场景太大做不深，太小不值得做<br>3. <strong>价值闭环缺失</strong>：Agent做了很多事但没产生可量化的价值<br>4. <strong>人机协作设计失败</strong>：没有设计好人在什么环节介入<br>5. <strong>数据飞轮未建立</strong>：Agent使用数据没有回流优化模型'},
+    {title:'20-60-20法则',content:'<strong>前20%人定义框架</strong>：人设定目标、约束和评估标准<br><strong>中60%AI生成</strong>：AI在框架内自主执行<br><strong>后20%人做价值判断</strong>：人审核AI输出，决定是否采纳<br>关键：不是让人做20%的工作，而是让人做100%的决策，AI做60%的执行'},
+    {title:'多级Agent架构',content:'<strong>初级AI处理80%常规</strong>：标准化的、低风险的任务<br><strong>复杂触发专家模型</strong>：非常规任务路由到专业模型<br><strong>争议转人工</strong>：AI无法判断的场景由人决策<br><strong>知识图谱持续优化</strong>：每次人工处理的结果回流到知识库<br>设计原则：每一级都有明确的升级触发条件'},
+    {title:'行业落地高价值场景',content:'<strong>制造业AI质检</strong>：8万片/天，≥99.59%准确率<br><strong>金融风控</strong>：6小时→8分钟审批<br><strong>医疗慢病管理</strong>：依从性+35%<br><strong>供应链调度</strong>：周转率3.2倍提升<br><strong>研发编码</strong>：效率+40%<br>共同特征：痛点真实+AI不可替代+商业闭环可量化'},
+    {title:'产品是总结出来的不是设计出来的',content:'<strong>先做解决方案，从10个中总结出系统</strong><br>不要一上来就设计完美的Agent系统<br>正确路径：<br>1. 先做单点解决方案验证场景<br>2. 从多个解决方案中抽象共性<br>3. 将共性沉淀为系统框架<br>4. 系统框架支撑新的解决方案快速落地'}
+  ]}
+];
+
+var SPACED_REPEAT = [1,3,7,14];
+
+function store(k,v){localStorage.setItem('ai-pm-'+k,JSON.stringify(v))}
+function load(k){try{return JSON.parse(localStorage.getItem('ai-pm-'+k))}catch(e){return null}}
+function today(){return new Date().toISOString().slice(0,10)}
+function stars(n){return '★'.repeat(n)+'☆'.repeat(5-n)}
+function shuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function hashStr(s){var h=0;for(var i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0}return Math.abs(h)}
+
+function updateTopProgress(){
+  var prog=load('path-progress')||{};
+  var mastered=0;
+  PATHS.forEach(function(p){if(prog[p.id]&&prog[p.id].status==='mastered')mastered++});
+  document.getElementById('top-mastered').textContent=mastered;
+  document.getElementById('top-bar').style.width=Math.round(mastered/11*100)+'%';
+
+  var records=load('checkin-records')||[];
+  var streak=0;
+  var d=new Date();
+  for(var i=0;i<365;i++){
+    var ds=d.toISOString().slice(0,10);
+    if(records.indexOf(ds)>=0){streak++;d.setDate(d.getDate()-1)}
+    else break;
+  }
+  document.getElementById('top-streak').textContent=streak;
+
+  var history=load('quiz-history')||[];
+  if(history.length>0){
+    var total=history.length;
+    var correct=history.filter(function(h){return h.score>=3}).length;
+    document.getElementById('top-accuracy').textContent=Math.round(correct/total*100);
+  }else{
+    document.getElementById('top-accuracy').textContent='0';
+  }
+}
+
+document.querySelectorAll('.tab').forEach(function(t){
+  t.addEventListener('click',function(){
+    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active')});
+    document.querySelectorAll('.page').forEach(function(x){x.classList.remove('active')});
+    t.classList.add('active');
+    document.getElementById('page-'+t.dataset.tab).classList.add('active');
+    if(t.dataset.tab==='checkin') renderCheckin();
+    if(t.dataset.tab==='path') renderPaths();
+    if(t.dataset.tab==='assess') drawRadar();
+    if(t.dataset.tab==='wrong') renderWrongBook();
+    if(t.dataset.tab==='quiz') {}
+    updateTopProgress();
+  });
+});
+
+var scores = load('assess') || {tech:3,product:3,biz:3,data:3,translate:3,agent:3,ethics:3,interview:3};
+
+function renderSliders(){
+  var html='';
+  DIMS.forEach(function(d){
+    html+='<div class="slider-group"><div class="slider-label"><span>'+d.name+'</span><span class="score" id="score-'+d.id+'">'+scores[d.id]+'</span></div><input type="range" min="1" max="5" step="1" value="'+scores[d.id]+'" data-dim="'+d.id+'" oninput="onSlider(this)"></div>';
+  });
+  document.getElementById('sliders').innerHTML=html;
+  drawRadar();
+  updateAnalysis();
+}
+
+function onSlider(el){
+  var dim=el.dataset.dim;
+  scores[dim]=parseInt(el.value);
+  document.getElementById('score-'+dim).textContent=el.value;
+  drawRadar();
+  updateAnalysis();
+}
+
+function drawRadar(){
+  var canvas=document.getElementById('radar');
+  var ctx=canvas.getContext('2d');
+  var w=canvas.width,h=canvas.height;
+  var cx=w/2,cy=h/2;
+  var r=Math.min(w,h)/2-40;
+  ctx.clearRect(0,0,w,h);
+  var n=DIMS.length;
+  var angleStep=Math.PI*2/n;
+  var startAngle=-Math.PI/2;
+  for(var ring=1;ring<=5;ring++){
+    var rr=r*ring/5;
+    ctx.beginPath();
+    for(var i=0;i<n;i++){
+      var a=startAngle+i*angleStep;
+      var x=cx+rr*Math.cos(a);
+      var y=cy+rr*Math.sin(a);
+      if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle=ring===5?'#3d4162':'#2d3148';
+    ctx.lineWidth=1;
+    ctx.stroke();
+  }
+  for(var i=0;i<n;i++){
+    var a=startAngle+i*angleStep;
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));
+    ctx.strokeStyle='#2d3148';
+    ctx.lineWidth=1;
+    ctx.stroke();
+    var lx=cx+(r+22)*Math.cos(a);
+    var ly=cy+(r+22)*Math.sin(a);
+    ctx.fillStyle='#9499b3';
+    ctx.font='11px sans-serif';
+    ctx.textAlign='center';
+    ctx.textBaseline='middle';
+    var shortName=DIMS[i].name.length>5?DIMS[i].name.slice(0,5):DIMS[i].name;
+    ctx.fillText(shortName,lx,ly);
+  }
+  ctx.beginPath();
+  for(var i=0;i<n;i++){
+    var a=startAngle+i*angleStep;
+    var v=scores[DIMS[i].id]/5;
+    var x=cx+r*v*Math.cos(a);
+    var y=cy+r*v*Math.sin(a);
+    if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+  }
+  ctx.closePath();
+  ctx.fillStyle='rgba(108,92,231,0.25)';
+  ctx.fill();
+  ctx.strokeStyle='#6c5ce7';
+  ctx.lineWidth=2;
+  ctx.stroke();
+  for(var i=0;i<n;i++){
+    var a=startAngle+i*angleStep;
+    var v=scores[DIMS[i].id]/5;
+    var x=cx+r*v*Math.cos(a);
+    var y=cy+r*v*Math.sin(a);
+    ctx.beginPath();
+    ctx.arc(x,y,4,0,Math.PI*2);
+    ctx.fillStyle='#a29bfe';
+    ctx.fill();
+  }
+}
+
+function updateAnalysis(){
+  var entries=DIMS.map(function(d){return{id:d.id,name:d.name,score:scores[d.id]}});
+  entries.sort(function(a,b){return a.score-b.score});
+  var min=entries[0];
+  var avg=(entries.reduce(function(s,e){return s+e.score},0)/entries.length).toFixed(1);
+  var strong=entries.filter(function(e){return e.score>=4});
+  var weak=entries.filter(function(e){return e.score<=2});
+  var html='平均分：<strong>'+avg+'</strong> / 5';
+  if(weak.length>0){
+    html+='<br>短板：<strong>'+weak.map(function(e){return e.name+'('+e.score+'分)'}).join('、')+'</strong>';
+    html+='<br>建议优先提升短板维度，可结合学习路径中对应板块进行针对性学习';
+  }
+  if(strong.length>0){
+    html+='<br>优势：<strong>'+strong.map(function(e){return e.name+'('+e.score+'分)'}).join('、')+'</strong>';
+  }
+  document.getElementById('analysis').innerHTML=html;
+}
+
+function saveAssess(){
+  store('assess',scores);
+  showToast('自评已保存');
+}
+
+var quizState={questions:[],idx:0,scores:[],timer:null,seconds:0};
+
+function startQuiz(){
+  var cat=document.getElementById('q-category').value;
+  var diff=parseInt(document.getElementById('q-diff').value);
+  var pool=QUESTIONS.filter(function(q){
+    if(cat!=='all'&&q.cat!==cat)return false;
+    if(diff>0&&q.diff!==diff)return false;
+    return true;
+  });
+  if(pool.length===0){showToast('没有符合条件的题目');return}
+  pool=shuffle(pool);
+  quizState.questions=pool;
+  quizState.idx=0;
+  quizState.scores=[];
+  quizState.seconds=0;
+  document.getElementById('quiz-setup').style.display='none';
+  document.getElementById('quiz-play').style.display='block';
+  renderQuizQuestion();
+  startTimer();
+}
+
+function startTimer(){
+  clearInterval(quizState.timer);
+  quizState.timer=setInterval(function(){
+    quizState.seconds++;
+    var el=document.getElementById('q-timer');
+    if(el){
+      var m=Math.floor(quizState.seconds/60);
+      var s=quizState.seconds%60;
+      el.textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+    }
+  },1000);
+}
+
+function renderQuizQuestion(){
+  var q=quizState.questions[quizState.idx];
+  var total=quizState.questions.length;
+  var html='<div class="fade-in">';
+  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">';
+  html+='<span style="font-size:13px;color:var(--text2)">第 '+(quizState.idx+1)+' / '+total+' 题</span>';
+  html+='<div class="quiz-timer" id="q-timer" style="font-size:20px;margin:0">00:00</div>';
+  html+='</div>';
+  html+='<div class="quiz-meta"><span class="quiz-tag '+CAT_CLASSES[q.cat]+'">'+CAT_NAMES[q.cat]+'</span><span class="stars">'+stars(q.diff)+'</span></div>';
+  html+='<div class="quiz-question">'+q.q+'</div>';
+  html+='<div id="q-answer-area"></div>';
+  html+='<div id="q-score-area"></div>';
+  html+='<div style="text-align:center;margin-top:16px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap" id="q-actions">';
+  html+='<button class="btn btn-outline" onclick="showAnswer()">查看参考答案</button>';
+  html+='<button class="btn btn-outline btn-sm" onclick="askAiQuiz('+q.id+')">🤖 问AI</button>';
+  html+='</div></div>';
+  document.getElementById('quiz-play').innerHTML=html;
+}
+
+function showAnswer(){
+  var q=quizState.questions[quizState.idx];
+  var pathInfo=PATHS.find(function(p){return p.id===q.pathId});
+  var pathName=pathInfo?pathInfo.name:'';
+  document.getElementById('q-answer-area').innerHTML='<div class="quiz-answer"><strong>参考答案要点：</strong><br>'+q.ans+'</div>';
+  var scoreHtml='<div class="score-row"><label>自评得分</label><input type="range" min="1" max="5" value="3" id="q-self-score" oninput="document.getElementById(\'q-self-val\').textContent=this.value"><span class="val" id="q-self-val">3</span></div>';
+  if(pathName){
+    scoreHtml+='<div style="font-size:12px;color:var(--text2);margin-top:4px">📖 相关知识点：<span style="color:var(--accent2);cursor:pointer;text-decoration:underline" onclick="goToPath('+q.pathId+')">'+pathName+'</span></div>';
+  }
+  document.getElementById('q-score-area').innerHTML=scoreHtml;
+  document.getElementById('q-actions').innerHTML='<button class="btn btn-primary" onclick="nextQuestion()">下一题</button>';
+}
+
+function goToPath(pathId){
+  document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active')});
+  document.querySelectorAll('.page').forEach(function(x){x.classList.remove('active')});
+  document.querySelector('[data-tab="path"]').classList.add('active');
+  document.getElementById('page-path').classList.add('active');
+  renderPaths();
+  setTimeout(function(){
+    var el=document.getElementById('path-detail-'+pathId);
+    if(el&&!el.classList.contains('open'))el.classList.add('open');
+    el.scrollIntoView({behavior:'smooth',block:'start'});
+  },100);
+}
+
+function nextQuestion(){
+  var scoreEl=document.getElementById('q-self-score');
+  var score=scoreEl?parseInt(scoreEl.value):3;
+  quizState.scores.push(score);
+  var q=quizState.questions[quizState.idx];
+  var history=load('quiz-history')||[];
+  history.push({id:q.id,score:score,date:today(),q:q.q,cat:q.cat,pathId:q.pathId});
+  store('quiz-history',history);
+
+  if(score<=2){
+    var wrongBook=load('wrong-book')||[];
+    var exists=wrongBook.some(function(w){return w.id===q.id&&w.date===today()});
+    if(!exists){
+      wrongBook.push({id:q.id,score:score,date:today(),q:q.q,cat:q.cat,pathId:q.pathId});
+      store('wrong-book',wrongBook);
+    }
+    var prog=load('path-progress')||{};
+    if(prog[q.pathId]){
+      var kpStatuses=prog[q.pathId].kpStatus;
+      var anyReview=prog[q.pathId].kpStatus.some(function(s){return s==='review'});
+      if(!anyReview){
+        for(var i=0;i<kpStatuses.length;i++){
+          if(kpStatuses[i]==='mastered'){kpStatuses[i]='review';break}
+        }
+      }
+      prog[q.pathId].status='learning';
+      store('path-progress',prog);
+      pathProgress=prog;
+    }
+  }
+
+  quizState.idx++;
+  if(quizState.idx>=quizState.questions.length){
+    finishQuiz();
+  }else{
+    quizState.seconds=0;
+    renderQuizQuestion();
+  }
+}
+
+function finishQuiz(){
+  clearInterval(quizState.timer);
+  var total=quizState.scores.length;
+  var avg=(quizState.scores.reduce(function(a,b){return a+b},0)/total).toFixed(1);
+  var correct=quizState.scores.filter(function(s){return s>=3}).length;
+  var html='<div class="fade-in quiz-result">';
+  html+='<h3>🎉 测试完成</h3>';
+  html+='<div class="stats-grid">';
+  html+='<div class="stat-item"><div class="num">'+total+'</div><div class="lbl">答题数</div></div>';
+  html+='<div class="stat-item"><div class="num">'+avg+'</div><div class="lbl">平均分</div></div>';
+  html+='<div class="stat-item"><div class="num">'+Math.round(correct/total*100)+'%</div><div class="lbl">正确率</div></div>';
+  html+='</div>';
+  html+='<div style="margin-top:12px">';
+  quizState.questions.forEach(function(q,i){
+    var isWrong=quizState.scores[i]<=2;
+    var pathInfo=PATHS.find(function(p){return p.id===q.pathId});
+    html+='<div class="result-item"><span>'+q.q.slice(0,30)+(q.q.length>30?'...':'')+'</span>';
+    html+='<span><span style="color:var(--accent2);font-weight:700">'+quizState.scores[i]+'分</span>';
+    if(isWrong)html+='<span class="wrong-mark">✗</span>';
+    if(pathInfo)html+='<span class="kp-link" onclick="goToPath('+q.pathId+')">📖'+pathInfo.name.slice(0,6)+'</span>';
+    html+='</span></div>';
+  });
+  html+='</div>';
+  html+='<div style="text-align:center;margin-top:16px"><button class="btn btn-primary" onclick="resetQuiz()">再来一次</button></div>';
+  html+='</div>';
+  document.getElementById('quiz-play').innerHTML=html;
+  updateTopProgress();
+}
+
+function resetQuiz(){
+  document.getElementById('quiz-setup').style.display='block';
+  document.getElementById('quiz-play').style.display='none';
+  document.getElementById('quiz-play').innerHTML='';
+  clearInterval(quizState.timer);
+}
+
+function renderWrongBook(){
+  var wrongBook=load('wrong-book')||[];
+  var html='';
+  if(wrongBook.length===0){
+    html='<div style="text-align:center;color:var(--text2);padding:30px;font-size:14px">暂无错题，继续加油！</div>';
+  }else{
+    wrongBook.slice().reverse().forEach(function(w){
+      var pathInfo=PATHS.find(function(p){return p.id===w.pathId});
+      html+='<div class="wrong-book-item">';
+      html+='<div class="q-text">'+w.q+'</div>';
+      html+='<div class="q-meta"><span class="quiz-tag '+CAT_CLASSES[w.cat]+'">'+CAT_NAMES[w.cat]+'</span><span class="q-score">得分：'+w.score+'/5</span><span class="q-date" style="font-size:11px;color:var(--text2)">'+w.date+'</span></div>';
+      if(pathInfo){
+        html+='<div class="q-kp" onclick="goToPath('+w.pathId+')">📖 复习知识点：'+pathInfo.name+'</div>';
+      }
+      html+='</div>';
+    });
+    html+='<div style="text-align:center;margin-top:12px"><button class="btn btn-outline btn-sm" onclick="clearWrongBook()">清空错题本</button></div>';
+  }
+  document.getElementById('wrong-list').innerHTML=html;
+}
+
+function clearWrongBook(){
+  store('wrong-book',[]);
+  renderWrongBook();
+  showToast('错题本已清空');
+}
+
+var pathProgress=load('path-progress')||{};
+PATHS.forEach(function(p){
+  if(!pathProgress[p.id]){
+    pathProgress[p.id]={kpStatus:p.kps.map(function(){return'not-started'}),status:'not-started',kpLearned:p.kps.map(function(){return false})}
+  }
+  if(!pathProgress[p.id].kpLearned){
+    pathProgress[p.id].kpLearned=pathProgress[p.id].kpStatus.map(function(s){return s==='mastered'});
+  }
+});
+
+function renderPaths(){
+  var html='';
+  PATHS.forEach(function(p){
+    var prog=pathProgress[p.id];
+    var masteredCount=prog.kpStatus.filter(function(s){return s==='mastered'}).length;
+    var learningCount=prog.kpStatus.filter(function(s){return s==='learning'||s==='review'}).length;
+    var pct=Math.round(masteredCount/p.kps.length*100);
+    var barColor=masteredCount===p.kps.length?'var(--green)':learningCount>0?'var(--orange)':'var(--accent)';
+    var statusLabel=prog.status==='mastered'?'已掌握':prog.status==='learning'?'学习中':'未开始';
+    var badgeClass=prog.status==='mastered'?'badge-mastered':prog.status==='learning'?'badge-learning':'badge-not-started';
+
+    html+='<div class="card path-card">';
+    html+='<div class="path-header" onclick="togglePath('+p.id+')">';
+    html+='<div class="left"><strong>'+p.name+'</strong><div class="desc">'+p.desc+'</div></div>';
+    html+='<span class="kp-arrow" id="path-arrow-'+p.id+'" style="font-size:14px;color:var(--text2);transition:transform .2s">▶</span></div>';
+    html+='<div class="path-badges"><span class="badge '+badgeClass+'">'+statusLabel+'</span><span class="badge badge-quiz">关联'+p.qIds.length+'题</span></div>';
+    html+='<div class="path-progress" onclick="togglePath('+p.id+')"><div class="path-progress-bar" style="width:'+pct+'%;background:'+barColor+'"></div></div>';
+    html+='<div class="path-meta" onclick="togglePath('+p.id+')"><span>'+masteredCount+'/'+p.kps.length+' 已掌握</span></div>';
+
+    html+='<div class="path-detail" id="path-detail-'+p.id+'">';
+    p.kps.forEach(function(kp,ki){
+      var st=prog.kpStatus[ki];
+      var learned=prog.kpLearned[ki];
+      var dotClass=st==='mastered'?'mastered':st==='learning'||st==='review'?'learning':'not-started';
+      html+='<div class="kp-item">';
+      html+='<div class="kp-header">';
+      html+='<div class="kp-check '+(learned?'checked':'')+'" onclick="event.stopPropagation();toggleKpLearned('+p.id+','+ki+')">'+(learned?'✓':'')+'</div>';
+      html+='<span class="kp-title '+(learned?'learned':'')+'" onclick="event.stopPropagation();toggleKpContent('+p.id+','+ki+')">'+kp.title+'</span>';
+      html+='<button class="ask-ai-btn" onclick="event.stopPropagation();askAiKp('+p.id+','+ki+')">问AI</button>';
+      html+='<span class="kp-arrow" id="kp-arrow-'+p.id+'-'+ki+'" onclick="event.stopPropagation();toggleKpContent('+p.id+','+ki+')">▶</span>';
+      html+='</div>';
+      html+='<div class="kp-content" id="kp-content-'+p.id+'-'+ki+'">'+kp.content+'</div>';
+      html+='</div>';
+    });
+
+    html+='<div class="path-actions">';
+    html+='<button class="btn btn-green btn-sm" onclick="event.stopPropagation();markPathMastered('+p.id+')">✓ 标记本板块已掌握</button>';
+    html+='<button class="btn btn-primary btn-sm" onclick="event.stopPropagation();goToPathQuiz('+p.id+')">🎯 去面试自测（本板块）</button>';
+    html+='</div>';
+    html+='</div></div>';
+  });
+  document.getElementById('path-list').innerHTML=html;
+}
+
+function togglePath(id){
+  var el=document.getElementById('path-detail-'+id);
+  var arrow=document.getElementById('path-arrow-'+id);
+  el.classList.toggle('open');
+  if(el.classList.contains('open')){
+    arrow.style.transform='rotate(90deg)';
+  }else{
+    arrow.style.transform='rotate(0deg)';
+  }
+}
+
+function toggleKpContent(pathId,kpIdx){
+  var el=document.getElementById('kp-content-'+pathId+'-'+kpIdx);
+  var arrow=document.getElementById('kp-arrow-'+pathId+'-'+kpIdx);
+  el.classList.toggle('open');
+  if(el.classList.contains('open')){
+    arrow.classList.add('open');
+  }else{
+    arrow.classList.remove('open');
+  }
+}
+
+function toggleKpLearned(pathId,kpIdx){
+  pathProgress[pathId].kpLearned[kpIdx]=!pathProgress[pathId].kpLearned[kpIdx];
+  if(pathProgress[pathId].kpLearned[kpIdx]){
+    pathProgress[pathId].kpStatus[kpIdx]='mastered';
+  }else{
+    pathProgress[pathId].kpStatus[kpIdx]='not-started';
+  }
+  var allMastered=pathProgress[pathId].kpStatus.every(function(s){return s==='mastered'});
+  var anyLearning=pathProgress[pathId].kpStatus.some(function(s){return s==='learning'||s==='review'});
+  pathProgress[pathId].status=allMastered?'mastered':anyLearning?'learning':'not-started';
+  store('path-progress',pathProgress);
+  renderPaths();
+  updateTopProgress();
+  var el=document.getElementById('path-detail-'+pathId);
+  if(el)el.classList.add('open');
+}
+
+function markPathMastered(pathId){
+  pathProgress[pathId].kpStatus=pathProgress[pathId].kpStatus.map(function(){return'mastered'});
+  pathProgress[pathId].kpLearned=pathProgress[pathId].kpLearned.map(function(){return true});
+  pathProgress[pathId].status='mastered';
+  store('path-progress',pathProgress);
+  renderPaths();
+  updateTopProgress();
+  showToast('已标记为已掌握！');
+  var el=document.getElementById('path-detail-'+pathId);
+  if(el)el.classList.add('open');
+}
+
+function goToPathQuiz(pathId){
+  var p=PATHS.find(function(x){return x.id===pathId});
+  if(!p)return;
+  document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active')});
+  document.querySelectorAll('.page').forEach(function(x){x.classList.remove('active')});
+  document.querySelector('[data-tab="quiz"]').classList.add('active');
+  document.getElementById('page-quiz').classList.add('active');
+
+  var pool=QUESTIONS.filter(function(q){return p.qIds.indexOf(q.id)>=0});
+  if(pool.length===0){showToast('该板块暂无关联题目');return}
+  pool=shuffle(pool);
+  quizState.questions=pool;
+  quizState.idx=0;
+  quizState.scores=[];
+  quizState.seconds=0;
+  document.getElementById('quiz-setup').style.display='none';
+  document.getElementById('quiz-play').style.display='block';
+  renderQuizQuestion();
+  startTimer();
+}
+
+function askAiKp(pathId,kpIdx){
+  var p=PATHS.find(function(x){return x.id===pathId});
+  if(!p)return;
+  var kp=p.kps[kpIdx];
+  var prompt='请详细解释AI产品经理中的【'+kp.title+'】，给我举例说明实际应用场景';
+  document.getElementById('ai-modal-title').textContent='问AI：'+kp.title;
+  document.getElementById('ai-modal-text').value=prompt;
+  document.getElementById('ai-modal').classList.add('show');
+}
+
+function askAiQuiz(qId){
+  var q=QUESTIONS.find(function(x){return x.id===qId});
+  if(!q)return;
+  var prompt='我正在准备AI产品经理面试，这道题我的回答是【请在此输入你的回答】，请帮我评估并给出改进建议：'+q.q;
+  document.getElementById('ai-modal-title').textContent='问AI：面试题';
+  document.getElementById('ai-modal-text').value=prompt;
+  document.getElementById('ai-modal').classList.add('show');
+}
+
+function closeAiModal(){
+  document.getElementById('ai-modal').classList.remove('show');
+}
+
+function copyAiPrompt(){
+  var text=document.getElementById('ai-modal-text').value;
+  navigator.clipboard.writeText(text).then(function(){
+    showToast('Prompt已复制到剪贴板');
+  }).catch(function(){
+    var ta=document.getElementById('ai-modal-text');
+    ta.select();
+    document.execCommand('copy');
+    showToast('Prompt已复制到剪贴板');
+  });
+}
+
+function openChatGPT(){
+  var text=encodeURIComponent(document.getElementById('ai-modal-text').value);
+  window.open('https://chat.openai.com/?q='+text,'_blank');
+}
+
+function openKimi(){
+  var text=encodeURIComponent(document.getElementById('ai-modal-text').value);
+  window.open('https://kimi.moonshot.cn/?q='+text,'_blank');
+}
+
+function getStreak(){
+  var records=load('checkin-records')||[];
+  if(records.length===0)return 0;
+  var streak=0;
+  var d=new Date();
+  for(var i=0;i<365;i++){
+    var ds=d.toISOString().slice(0,10);
+    if(records.indexOf(ds)>=0){streak++;d.setDate(d.getDate()-1)}
+    else break;
+  }
+  return streak;
+}
+
+function isCheckedToday(){
+  var records=load('checkin-records')||[];
+  return records.indexOf(today())>=0;
+}
+
+function getTodayKps(){
+  var learningKps=[];
+  PATHS.forEach(function(p){
+    var prog=pathProgress[p.id];
+    p.kps.forEach(function(kp,ki){
+      if(prog.kpStatus[ki]==='learning'||prog.kpStatus[ki]==='review'){
+        learningKps.push({pathId:p.id,pathName:p.name,kp:kp.title,idx:ki,source:p.source});
+      }
+    });
+  });
+  if(learningKps.length<3){
+    var notStarted=[];
+    PATHS.forEach(function(p){
+      var prog=pathProgress[p.id];
+      p.kps.forEach(function(kp,ki){
+        if(prog.kpStatus[ki]==='not-started'){
+          notStarted.push({pathId:p.id,pathName:p.name,kp:kp.title,idx:ki,source:p.source});
+        }
+      });
+    });
+    learningKps=learningKps.concat(shuffle(notStarted));
+  }
+  var seed=hashStr(today());
+  var picked=[];
+  var pool=learningKps.length>0?learningKps:PATHS.reduce(function(arr,p){return arr.concat(p.kps.map(function(kp,ki){return{pathId:p.id,pathName:p.name,kp:kp.title,idx:ki,source:p.source}}))},[]);
+  for(var i=0;i<3&&i<pool.length;i++){
+    picked.push(pool[(seed+i)%pool.length]);
+  }
+  return picked;
+}
+
+function getTodayQuiz(){
+  var seed=hashStr(today()+'quiz');
+  return QUESTIONS[seed%QUESTIONS.length];
+}
+
+function renderCheckin(){
+  document.getElementById('streak-num').textContent=getStreak();
+  var kps=getTodayKps();
+  var kpsHtml='';
+  kps.forEach(function(kp,i){
+    kpsHtml+='<div class="kp-card"><strong>'+(i+1)+'. '+kp.kp+'</strong><div class="kp-source">来源：'+kp.pathName+'</div></div>';
+  });
+  document.getElementById('today-kps').innerHTML=kpsHtml;
+  var q=getTodayQuiz();
+  document.getElementById('today-quiz').innerHTML='<div class="kp-card"><div class="quiz-meta"><span class="quiz-tag '+CAT_CLASSES[q.cat]+'">'+CAT_NAMES[q.cat]+'</span><span class="stars">'+stars(q.diff)+'</span></div><strong>'+q.q+'</strong><div id="checkin-answer"></div></div><button class="btn btn-outline btn-sm" onclick="showCheckinAnswer()" style="margin-top:8px">查看答案</button>';
+  var btn=document.getElementById('checkin-btn');
+  if(isCheckedToday()){
+    btn.textContent='今日已打卡 ✓';
+    btn.disabled=true;
+  }else{
+    btn.textContent='完成今日打卡';
+    btn.disabled=false;
+  }
+  renderHistory();
+}
+
+function showCheckinAnswer(){
+  var q=getTodayQuiz();
+  document.getElementById('checkin-answer').innerHTML='<div class="quiz-answer" style="margin-top:8px"><strong>参考答案：</strong><br>'+q.ans+'</div>';
+}
+
+function doCheckin(){
+  if(isCheckedToday())return;
+  var records=load('checkin-records')||[];
+  records.push(today());
+  store('checkin-records',records);
+  var kpReview=load('kp-review')||{};
+  var kps=getTodayKps();
+  kps.forEach(function(kp){
+    var key=kp.pathId+'-'+kp.idx;
+    if(!kpReview[key])kpReview[key]={nextDate:today(),level:0};
+    kpReview[key].level=Math.min(kpReview[key].level+1,SPACED_REPEAT.length);
+    var days=SPACED_REPEAT[Math.min(kpReview[key].level,SPACED_REPEAT.length)-1];
+    var d=new Date();
+    d.setDate(d.getDate()+days);
+    kpReview[key].nextDate=d.toISOString().slice(0,10);
+  });
+  store('kp-review',kpReview);
+  var btn=document.getElementById('checkin-btn');
+  btn.textContent='今日已打卡 ✓';
+  btn.disabled=true;
+  document.getElementById('streak-num').textContent=getStreak();
+  renderHistory();
+  updateTopProgress();
+  showToast('打卡成功！连续'+getStreak()+'天');
+}
+
+function renderHistory(){
+  var records=load('checkin-records')||[];
+  var html='';
+  var sorted=records.slice().sort().reverse();
+  sorted.slice(0,30).forEach(function(r){
+    html+='<div class="history-item"><span class="history-date">'+r+'</span><span class="history-status history-done">已打卡</span></div>';
+  });
+  if(sorted.length===0)html='<div style="text-align:center;color:var(--text2);padding:20px;font-size:13px">暂无打卡记录</div>';
+  document.getElementById('history-list').innerHTML=html;
+}
+
+function showResetModal(){document.getElementById('reset-modal').classList.add('show')}
+function closeResetModal(){document.getElementById('reset-modal').classList.remove('show')}
+function doReset(){
+  var keys=[];
+  for(var i=0;i<localStorage.length;i++){
+    var k=localStorage.key(i);
+    if(k.indexOf('ai-pm-')===0)keys.push(k);
+  }
+  keys.forEach(function(k){localStorage.removeItem(k)});
+  scores={tech:3,product:3,biz:3,data:3,translate:3,agent:3,ethics:3,interview:3};
+  pathProgress={};
+  PATHS.forEach(function(p){pathProgress[p.id]={kpStatus:p.kps.map(function(){return'not-started'}),status:'not-started',kpLearned:p.kps.map(function(){return false})}});
+  renderSliders();
+  resetQuiz();
+  renderCheckin();
+  renderPaths();
+  renderWrongBook();
+  updateTopProgress();
+  closeResetModal();
+  showToast('数据已重置');
+}
+
+function showToast(msg){
+  var el=document.createElement('div');
+  el.textContent=msg;
+  el.style.cssText='position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:10px 24px;border-radius:8px;font-size:14px;z-index:999;animation:fadeIn .3s';
+  document.body.appendChild(el);
+  setTimeout(function(){el.remove()},2000);
+}
+
+renderSliders();
+renderPaths();
+renderCheckin();
+updateTopProgress();
+</script>
+</body>
+</html>
