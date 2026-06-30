@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI产品经理 · 完整自学工具</title>
+<title>AI产品经理 · 自学教材</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#0f1117;--card:#1a1d27;--card2:#222639;--border:#2d3148;--text:#e4e6f0;--text2:#9499b3;--accent:#6c5ce7;--accent2:#a29bfe;--green:#00b894;--orange:#fdcb6e;--red:#e17055;--blue:#74b9ff;--radius:12px}
@@ -97,20 +97,26 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 .path-detail{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
 .path-detail.open{display:block}
 
-.kp-item{padding:10px 0;border-bottom:1px solid var(--border)}
-.kp-item:last-child{border:none}
-.kp-header{display:flex;align-items:center;gap:8px;cursor:pointer}
-.kp-header .kp-check{width:18px;height:18px;border-radius:4px;border:2px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:12px;color:#fff}
-.kp-header .kp-check.checked{background:var(--green);border-color:var(--green)}
-.kp-header .kp-title{flex:1;font-size:13px;color:var(--text2);transition:color .2s}
-.kp-header .kp-title.learned{color:var(--green)}
-.kp-header .kp-arrow{font-size:10px;color:var(--text2);transition:transform .2s}
-.kp-header .kp-arrow.open{transform:rotate(90deg)}
-.kp-header .ask-ai-btn{padding:3px 8px;border-radius:4px;font-size:11px;border:1px solid var(--accent);color:var(--accent2);background:transparent;cursor:pointer;white-space:nowrap}
-.kp-header .ask-ai-btn:hover{background:var(--accent)22}
-.kp-content{display:none;padding:8px 0 4px 26px;font-size:13px;line-height:1.8;color:var(--text2)}
-.kp-content.open{display:block}
-.kp-content strong{color:var(--text)}
+.section-block{margin-bottom:20px}
+.section-label{font-size:13px;font-weight:700;color:var(--accent2);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.section-label .dot{width:6px;height:6px;border-radius:50%;background:var(--accent2)}
+.section-content{font-size:14px;line-height:1.9;color:var(--text2)}
+.section-content p{margin-bottom:10px}
+.section-content em{color:var(--orange);font-style:normal;font-weight:600}
+.section-content strong{color:var(--text)}
+
+.collapse-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;padding:10px 0;font-size:13px;font-weight:600;color:var(--accent2);border:none;background:none;width:100%;text-align:left}
+.collapse-toggle:hover{color:var(--accent)}
+.collapse-toggle .arrow{font-size:10px;transition:transform .2s}
+.collapse-toggle .arrow.open{transform:rotate(90deg)}
+.collapse-body{display:none;padding:4px 0 8px}
+.collapse-body.open{display:block}
+
+.think-item{font-size:13px;line-height:1.8;color:var(--text2);padding:6px 0 6px 16px;border-left:2px solid var(--accent);margin-bottom:6px}
+.think-item strong{color:var(--orange)}
+
+.memory-item{font-size:13px;line-height:1.6;color:var(--text2);padding:6px 12px;background:var(--card2);border-radius:6px;margin-bottom:4px}
+.memory-item::before{content:"✦ ";color:var(--accent2)}
 
 .path-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
 
@@ -161,7 +167,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 .fade-in{animation:fadeIn .3s}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-@media(max-width:480px){.header h1{font-size:18px}.tab{font-size:12px;padding:8px 4px}.card{padding:12px}.quiz-timer{font-size:22px}.path-badges{gap:4px}}
+@media(max-width:480px){.header h1{font-size:18px}.tab{font-size:12px;padding:8px 4px}.card{padding:12px}.quiz-timer{font-size:22px}.path-badges{gap:4px}.section-content{font-size:13px}}
 </style>
 </head>
 <body>
@@ -176,8 +182,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div>
 
 <div class="header">
-  <h1>AI产品经理 · 完整自学工具</h1>
-  <p>学习 · 自测 · 答疑 · 打卡</p>
+  <h1>AI产品经理 · 自学教材</h1>
+  <p>叙事 · 案例 · 思考 · 打卡</p>
 </div>
 
 <div class="tabs">
@@ -328,93 +334,17 @@ var CAT_NAMES = {tech:'技术理解',product:'产品设计',biz:'商业化',beha
 var CAT_CLASSES = {tech:'tag-tech',product:'tag-product',biz:'tag-biz',behavior:'tag-behavior',trend:'tag-trend'};
 
 var PATHS = [
-  {id:1,name:'AI产业结构与PM定位',desc:'理解AI产业链各环节及PM的定位与价值',qIds:[25,26,27],kps:[
-    {title:'AI产业结构三层模型',content:'<strong>行业+AI</strong>：重行业，AI赋能传统行业升级（如金融+AI、医疗+AI）<br><strong>AI+行业</strong>：重AI，AI催生新行业（如自动驾驶、AI绘画）<br><strong>基础平台</strong>：提供AI技术平台（如大模型API、算力平台）<br>三层模型决定了PM在不同层级需要不同的核心能力：行业+AI需要行业深度，AI+行业需要技术敏感度，基础平台需要生态构建力'},
-    {title:'AI PM狭义vs广义定义',content:'<strong>狭义AI PM</strong>：直接应用语义/语音/视觉/ML 4个领域的产品经理<br><strong>广义AI PM</strong>：间接涉及AI或不成熟细分领域的PM<br>区分意义：狭义需要深度技术理解，广义更侧重行业洞察+AI应用能力'},
-    {title:'AI PM四大核心能力',content:'1. <strong>找准商业变现闭环</strong>：技术再好没有商业闭环也是空谈<br>2. <strong>把控产品需求</strong>：在技术可行性和用户需求间找到平衡<br>3. <strong>与技术互相推动</strong>：不是被动等技术开发，而是推动技术方向<br>4. <strong>获取用户信任</strong>：AI产品天然有不确定性，信任是使用的前提'},
-    {title:'AI PM vs 传统PM本质差异',content:'<strong>决策逻辑</strong>：确定性→概率性（传统PM做确定性功能，AI PM管理概率性输出）<br><strong>核心驱动</strong>：功能→数据-模型-场景（传统PM驱动功能迭代，AI PM驱动数据飞轮）<br><strong>关键挑战</strong>：需求优先级→数据闭环（传统PM排需求优先级，AI PM建数据闭环）<br><strong>成功定义</strong>：DAU→数据飞轮（传统看DAU，AI看数据质量和飞轮效应）'},
-    {title:'71%的"AI PM"岗位不需要真懂AI',content:'数据来源：200份JD拆解结果<br><strong>真AI PM 29%</strong>：JD含"模型评估/badcase分析/技术方案评审"<br><strong>半AI PM 42%</strong>：涉及AI但不深入<br><strong>伪AI PM 29%</strong>：挂AI名做传统PM<br><strong>识别方法</strong>：看JD有无"模型评估/badcase分析/技术方案评审"关键词'}
-  ]},
-  {id:2,name:'系统化思维与物理思维',desc:'用系统思维和物理思维分析AI产品问题',qIds:[22],kps:[
-    {title:'核心原则：用简单模拟复杂',content:'不用复杂追求复杂。AI产品最大的陷阱就是一上来就做复杂系统。<br>核心思想：<strong>简单系统→验证→叠加条件→复杂系统</strong><br>这是盖尔定律的思维方式延伸'},
-    {title:'经验vs方法',content:'<strong>经验</strong>：易学、易用、过时快。在特定场景有效但无法迁移<br><strong>方法</strong>：难学但泛用性强。可以跨场景使用<br><strong>判断标准</strong>：能否跨场景使用？能=方法，不能=经验<br>AI领域技术迭代快，经验容易过时，方法才是护城河'},
-    {title:'有方向的思考',content:'三步法：<br>1. <strong>先划定思考范围</strong>：不要漫无边际地想<br>2. <strong>在范围内猜测</strong>：基于已有信息做假设<br>3. <strong>不断缩小范围</strong>：通过验证排除错误假设<br>类比：像二分查找一样逐步逼近答案'},
-    {title:'物理思维（最小子系统法）',content:'从简单到复杂逐步叠加条件：<br>1. 找到最简可运行的子系统<br>2. 不断去掉弱关联子系统<br>3. 直到子系统间联系极强=核心框架<br><strong>案例1</strong>：柯达被打印机打败（不是数码相机）——蒸发掉相同点，找到真正变量<br><strong>案例2</strong>：iPhone vs 诺基亚——蒸发掉相同点=物理键盘vs虚拟键盘'},
-    {title:'精确定义',content:'<strong>能把一件事定义到可以在任何场景复现的地步=学会了</strong><br>这是检验是否真正理解的终极标准<br>如果只能描述不能精确定义，说明还停留在经验层面'},
-    {title:'案例深度解析',content:'<strong>柯达案例</strong>：大家以为柯达死于数码相机，实际死于打印机——蒸发掉"拍照"这个相同点，真正的变量是"影像的输出方式"<br><strong>iPhone案例</strong>：蒸发掉"手机功能"这个相同点，真正的变量是"输入方式"——物理键盘vs虚拟键盘，这决定了整个产品形态'}
-  ]},
-  {id:3,name:'四大AI思维与心力四力',desc:'掌握AI产品经理的四大思维模型和心力框架',qIds:[23,27],kps:[
-    {title:'多样化思维',content:'<strong>多角度性</strong>：从不同视角考察同一需求<br><strong>多层次性</strong>：从不同抽象层次理解问题<br><strong>互为中介性</strong>：不同角度之间可以互相验证和补充<br>应用：评估AI需求时，同时从用户、技术、商业三个角度审视'},
-    {title:'差异化思维',content:'<strong>核心</strong>：行业内独树一帜<br><strong>先发特质</strong>：率先进入某个细分领域建立壁垒<br><strong>后发特质</strong>：在已有市场中找到差异化切入点<br><strong>代价</strong>：差异化可能以成本为代价，需要权衡<br>AI领域差异化关键：找到技术优势与场景的交叉点'},
-    {title:'穿透思维',content:'<strong>横向穿透</strong>：技术→供应链，将AI技术能力横向迁移到不同行业<br><strong>纵向穿透</strong>：技术→行业深挖，在单一行业不断深入<br><strong>案例</strong>：智能电视→语音遥控→MEMC画质→老年戏曲优化<br>从电视硬件穿透到语音交互，再穿透到画质技术，最终穿透到老年人群需求'},
-    {title:'大道思维',content:'<strong>核心</strong>：赛道足够长足够宽，做改变社会形态的产品<br><strong>判断标准</strong>：这个赛道5-10年后还存在吗？规模能扩大10倍吗？<br><strong>反面</strong>：做"小而美"的AI工具可能很赚钱，但不具备大道思维的特征<br>AI领域的大道：寻找AI能根本性改变社会运作方式的场景'},
-    {title:'心力四力',content:'<strong>认知力（致知力）</strong>：辨别伪需求，在信息过载中找到真问题<br><strong>方法论力（事上练）</strong>：困境中磨炼，不是纸上谈兵而是实战中提炼方法<br><strong>迭代力（初心不动随机而动）</strong>：不以昨日眼光理解今日用户，保持初心但灵活迭代<br><strong>验证力（知行合一）</strong>：从用户增长验证，不是自嗨而是用数据说话'},
-    {title:'案例：淘宝vs易趣',content:'<strong>方法论力的经典案例</strong><br>易趣：照搬美国eBay模式，收费+大卖家优先<br>淘宝：免费开店+扶持中小卖家+支付宝担保交易<br><strong>关键差异</strong>：淘宝不是在易趣的框架内竞争，而是重新定义了电商方法论<br><strong>启示</strong>：AI产品同样需要跳出传统产品框架，用新方法论定义竞争维度'}
-  ]},
-  {id:4,name:'可演进性与盖尔定律',desc:'理解产品可演进性设计原则和盖尔定律',qIds:[22],kps:[
-    {title:'盖尔定律',content:'<strong>复杂系统必须从切实可行的简单系统开始，无法自顶向下设计</strong><br>这是AI产品最重要的设计原则之一<br>反面案例：很多AI项目失败就是因为一上来就想做全功能系统<br>正面案例：ChatGPT从简单的对话开始，逐步演化为多模态平台'},
-    {title:'AI产品交付四层',content:'<strong>零件→工具→解决方案→系统</strong><br>零件：单个AI能力（如语音识别API）<br>工具：组合多个零件解决特定问题（如语音转写工具）<br>解决方案：工具+流程+服务（如会议纪要解决方案）<br>系统：多解决方案协同（如企业智能办公系统）<br><strong>好的产品是总结出来的，不是设计出来的</strong>'},
-    {title:'不确定性拆分',content:'<strong>把大的不确定性切成小的</strong><br>AI项目最大的风险不是技术不行，而是不确定性太大<br>方法：将"模型能否达到效果"拆分为"数据够不够→标注质量行不行→模型选型对不对→指标定义合理吗"<br>每个小不确定性都可以独立验证'},
-    {title:'必须有业务基础系统',content:'<strong>AI是蛋糕上的樱桃，基础业务系统才是蛋糕本身</strong><br>没有基础业务系统的AI产品=空中楼阁<br>基础业务系统包括：用户系统、数据采集、业务流程、反馈机制<br>AI只有在基础系统之上才能发挥价值'},
-    {title:'中间节点管理',content:'<strong>最大风险不是技术，是耐心耗尽前能否达到中间节点</strong><br>中间节点=可验证的阶段性成果<br>方法：设置明确的中间节点，每个节点都有可量化的成功标准<br>关键：让利益相关方看到进展，维持信心和资源投入'},
-    {title:'场景跃迁',content:'<strong>AI产品发展过程中会跃迁到新场景</strong><br>原因：AI能力提升后，原本不适用的场景变得可行<br>案例：语音识别从命令控制→语音助手→会议纪要→实时翻译<br>启示：产品设计要预留场景扩展空间'},
-    {title:'康威定律',content:'<strong>产品结构映射团队结构，可演化的产品需要可演化的团队</strong><br>如果团队是瀑布式开发，产品很难快速迭代<br>如果团队是微服务架构，产品更容易模块化演进<br>AI产品尤其需要：数据团队、算法团队、产品团队紧密协作的团队结构'},
-    {title:'案例：雅虎与Pinterest',content:'<strong>雅虎</strong>：分类目录→门户。从简单的网站目录开始，逐步演化为综合门户<br><strong>Pinterest</strong>：电商导购→图片分享→导购。从电商工具开始，发现用户更喜欢图片分享，最终回到导购但形态完全不同<br><strong>共同规律</strong>：都不是一开始就设计成最终形态，而是从简单系统逐步演进'}
-  ]},
-  {id:5,name:'需求发现与场景评估',desc:'掌握AI产品需求发现和场景评估方法论',qIds:[9,11,17,23],kps:[
-    {title:'数据挖掘6类任务',content:'1. <strong>关联分析</strong>：发现数据间的关联规则（如购物篮分析）<br>2. <strong>序列发现</strong>：发现时间序列中的模式（如用户行为路径）<br>3. <strong>聚类分析</strong>：将相似对象分组（如用户分群）<br>4. <strong>分类</strong>：将对象分到预定义类别（如垃圾邮件识别）<br>5. <strong>偏差检测</strong>：发现异常数据（如欺诈检测）<br>6. <strong>预测</strong>：预测未来值（如销量预测）'},
-    {title:'好的AI业务场景4个条件',content:'1. <strong>有大量数据</strong>：AI需要数据喂养，没有数据就没有AI<br>2. <strong>充分体现个性化需求</strong>：AI的价值在于个性化，千人一面用规则就行<br>3. <strong>用户能反馈结果</strong>：没有反馈就没有学习，数据飞轮转不起来<br>4. <strong>技术可实现且成本可控</strong>：技术天花板和成本底线都要评估'},
-    {title:'AI产品ToB优先逻辑',content:'<strong>有算法没数据→ToB获取数据</strong>：B端客户有数据积累<br><strong>获客成本高→B端热启动</strong>：B端一个客户就能覆盖成本<br><strong>技术不成熟→B端容错率高</strong>：B端愿意为早期技术付费并包容不足<br>经典路径：先ToB积累数据→打磨技术→再ToC规模化'},
-    {title:'需求落地要点',content:'<strong>不需要100%解决</strong>：AI产品追求的是"足够好"而非"完美"<br><strong>分类规则直接影响模型效果</strong>：分类定义就是产品定义<br><strong>分类太细→数据少</strong>：每个类别样本不够，模型学不好<br><strong>分类太大→有歧义</strong>：一个类别包含太多不同含义，模型无法区分<br>关键：找到分类粒度的最佳平衡点'},
-    {title:'黄金场景识别三法则',content:'1. <strong>痛点真实性</strong>：用户是否真的在用低效方式解决此问题？如果没人尝试解决，可能不是真痛点<br>2. <strong>AI不可替代性</strong>：AI相比传统方案是否有数倍体验提升？如果只提升20%，不值得用AI<br>3. <strong>商业闭环可量化</strong>：能否清晰算出投入产出比？如果ROI算不清，商业模式不成立'},
-    {title:'AI产品从"人工智障"开始',content:'<strong>不要直奔主题，直奔主题90%会失败</strong><br>原因：AI能力边界不清晰，直接做最终产品风险极高<br>正确路径：从简单场景开始→验证技术可行性→逐步扩展<br>"人工智障"阶段：先用规则+人工覆盖，验证场景价值后再引入AI<br>案例：智能客服先用关键词匹配，验证用户需求后再上NLP模型'}
-  ]},
-  {id:6,name:'AI技术知识速查',desc:'AI产品经理必须了解的核心技术概念',qIds:[1],kps:[
-    {title:'语音交互评价指标体系',content:'<strong>ASR（语音识别）</strong>：WER（词错率）/ SER（句错率）<br><strong>语音唤醒</strong>：唤醒率 / 误唤醒率<br><strong>NLP（自然语言处理）</strong>：精确率 / 召回率 / F1<br><strong>TTS（语音合成）</strong>：MOS（平均意见分）/ ABX测试<br><strong>对话系统</strong>：CPS（每秒字符数）/ 完成度 / 求助人工比例'},
-    {title:'数据标注工作流程',content:'<strong>标注员→审核员→管理员</strong>三级体系<br><strong>关键指标</strong>：精确率+召回率<br><strong>产品核心职责</strong>：制定分类边界规则<br>标注质量直接决定模型效果，产品经理需要：<br>1. 定义清晰的标注规范<br>2. 设计标注质检流程<br>3. 处理标注歧义case'},
-    {title:'深度学习核心算法',content:'<strong>CNN（卷积神经网络）</strong>：图像领域，局部特征提取<br><strong>RNN（循环神经网络）</strong>：序列数据，有时间记忆<br><strong>LSTM（长短期记忆网络）</strong>：长序列，解决RNN梯度消失<br><strong>GANs（生成对抗网络）</strong>：生成任务，生成器vs判别器<br><strong>RL（强化学习）</strong>：决策任务，通过奖励信号学习'},
-    {title:'NLP是AI发展核心瓶颈',content:'<strong>深度学习对语音/图像提升10-20%，对NLP只提升1-2%</strong><br>原因：语言的模糊性和上下文依赖远超图像<br>影响：NLP相关产品需要更多规则兜底和人工审核<br>大模型突破：Transformer架构大幅提升了NLP能力，但幻觉问题仍然存在<br>产品启示：NLP产品的容错设计比图像产品更重要'}
-  ]},
-  {id:7,name:'大模型技术选型',desc:'大模型技术选型的决策框架和实践方法',qIds:[2,3,5,6],kps:[
-    {title:'Prompt Engineering',content:'<strong>快速适配多任务，成本低，零样本/少样本即可</strong><br>适用场景：快速验证、多任务适配、资源有限<br>技巧：清晰的指令+示例+输出格式约束<br>优势：无需训练，迭代快<br>局限：无法改变模型深层行为，对领域术语理解有限'},
-    {title:'RAG（检索增强生成）',content:'<strong>需要最新信息+可溯源，中成本</strong><br>核心组件：向量数据库选型+检索策略+重排序<br>适用场景：知识库问答、需要引用来源、信息频繁更新<br>关键决策：向量数据库选型（Milvus/Pinecone/Weaviate）<br>局限：检索质量决定回答质量，无法改变模型行为'},
-    {title:'Fine-tuning',content:'<strong>垂直领域深度适配，高成本</strong><br>需要：大量标注数据+计算资源<br>适用场景：领域专业术语学习、改变模型输出风格/格式、特定任务深度优化<br>关键：数据质量>数据数量，1000条高质量数据>10000条低质量数据'},
-    {title:'LoRA',content:'<strong>低成本微调，只更新少量参数</strong><br>原理：在原模型旁添加低秩矩阵，只训练这些新增参数<br>优势：显存需求低、训练快、可插拔切换<br>适用场景：资源有限时的领域适配、多任务快速切换<br>局限：适应能力不如全量微调'},
-    {title:'MoE（混合专家系统）',content:'<strong>千亿级模型部署，路由策略复杂，推理延迟高</strong><br>原理：通过路由机制动态选择激活哪些子模型（专家）<br>优势：参数效率高——总参数多但每次推理只激活部分<br>挑战：路由策略复杂、负载均衡困难、训练不稳定'},
-    {title:'量化（4bit/8bit）',content:'<strong>降低推理成本，精度损失vs成本节约的权衡</strong><br>4bit量化：成本最低，精度损失较大<br>8bit量化：成本适中，精度损失较小<br>决策框架：对精度敏感的任务用8bit，对成本敏感的用4bit<br>实战：量化后通常需要评估关键指标下降幅度'},
-    {title:'RAG vs Fine-tuning决策框架',content:'<strong>需最新信息/可溯源→RAG</strong><br><strong>需改模型行为/领域术语→Fine-tuning</strong><br><strong>常结合使用</strong>：先Fine-tuning改行为，再RAG补知识<br>决策树：<br>1. 信息是否频繁更新？是→RAG<br>2. 是否需要改变模型行为？是→Fine-tuning<br>3. 两者都需要？→先Fine-tuning再RAG'},
-    {title:'数据漂移与模型漂移',content:'<strong>数据漂移</strong>：输入分布变化（PSI指标监控）<br>PSI>0.25表示显著漂移，需要重新训练<br><strong>模型漂移</strong>：性能随时间下降（实时跟踪核心指标）<br>监控方法：核心指标看板+自动告警<br>应对策略：增量标注+模型重训练+数据版本管理'}
-  ]},
-  {id:8,name:'模型幻觉与容错设计',desc:'AI产品容错机制设计的核心方法论',qIds:[4,8,29],kps:[
-    {title:'模型幻觉',content:'<strong>生成看似合理但错误的内容，是大模型核心风险</strong><br>类型：事实性幻觉（编造不存在的事实）/ 逻辑性幻觉（推理过程错误）<br>原因：训练数据不完整、模型过度自信、缺乏事实核查机制<br>影响：用户信任崩塌、法律合规风险、商业损失'},
-    {title:'产品设计层面应对',content:'<strong>置信度展示</strong>：让用户知道AI的确定程度<br><strong>人工复核通道</strong>：关键决策必须人工确认<br><strong>免责声明</strong>：明确AI输出仅供参考<br><strong>渐进式展示</strong>：先展示高置信度内容，低置信度内容折叠'},
-    {title:'技术层面应对',content:'<strong>RAG检索增强</strong>：用真实数据约束模型输出<br><strong>规则引擎兜底</strong>：高风险场景用规则约束AI输出<br><strong>多模型交叉验证</strong>：多个模型独立输出，结果一致才展示<br><strong>事实核查链</strong>：在生成后增加事实核查步骤'},
-    {title:'反脆弱设计',content:'<strong>IF {AI输出置信度<85%} THEN {转人工审核}</strong><br><strong>IF {涉及生命财产安全} THEN {强制双AI交叉验证}</strong><br>核心理念：不是消除错误，而是让系统在错误中变得更强<br>每次人工纠正的结果都回流到训练数据，形成正循环'},
-    {title:'关键指标',content:'<strong>幻觉率</strong>：AI输出中包含错误信息的比例<br><strong>人工接管率</strong>：需要人工介入的比例<br><strong>用户纠错率</strong>：用户主动纠正AI输出的比例<br>目标：幻觉率<5%，人工接管率<15%，用户纠错率<10%'},
-    {title:'Chatbot技术已ready，缺的是App',content:'<strong>缺的不是技术，而是在正确场景使用</strong><br>Chatbot技术已经成熟，但大多数Chatbot产品失败了<br>原因：场景不对、体验不佳、没有解决真问题<br>启示：不要做"通用Chatbot"，要做"特定场景的AI助手"<br>成功案例：GitHub Copilot（编码场景）、Midjourney（绘画场景）'}
-  ]},
-  {id:9,name:'商业化落地与成本控制',desc:'AI产品商业化策略和成本控制方法',qIds:[12,13,14,15,16,18],kps:[
-    {title:'从Demo到规模化营收3个必破卡点',content:'1. <strong>场景闭环</strong>：单点→全链路。用户不会为半成品付费<br>2. <strong>单位经济模型</strong>：烧钱→盈利可复制。推理成本必须可控<br>3. <strong>规模化交付</strong>：定制→标准化。否则无法规模化<br>每个卡点都是一道生死线，跨不过去就无法规模化'},
-    {title:'B端vs C端策略',content:'<strong>B端</strong>：按成果付费+ROI可视化+续费率80%+<br><strong>C端</strong>：订阅制+付费率1-4%+社交传播<br><strong>关键差异</strong>：B端卖效率，C端卖体验<br>B端决策链长但客单价高，C端决策快但付费率低<br>AI产品常见路径：先B端验证→再C端规模化'},
-    {title:'定价逻辑',content:'<strong>B端</strong>：按节省人力成本定价，客户能算出ROI<br><strong>C端</strong>：按情绪价值/效率提升定价，用户愿为体验付费<br><strong>API</strong>：按token计费，输入输出分别定价<br><strong>定价陷阱</strong>：不能按成本定价，要按价值定价<br>案例：AI客服按节省的客服人力成本定价，而非按推理成本定价'},
-    {title:'成本控制实战',content:'<strong>端侧+云侧混合部署</strong>：月推理成本2000→300元<br><strong>Prompt工程降低数据需求</strong>：10万→8000张标注数据<br><strong>AI客服单次交互成本需低于人工30%</strong><br>方法：量化+蒸馏+缓存+批量处理<br>关键：成本控制不是一次性优化，而是持续运营'},
-    {title:'67%的AI创新项目因商业闭环缺失失败',content:'<strong>技术可行≠商业可行</strong><br>具体表现：<br>1. 缺场景闭环：技术有了但没人用<br>2. 经济模型不通：推理成本高于收入<br>3. 伪需求：想象的需求非真实需求<br>核心教训：先验证商业闭环，再投入技术开发'},
-    {title:'AI=数据+算法+算力但落地关键在场景',content:'<strong>技术三要素</strong>：数据+算法+算力<br><strong>落地关键</strong>：场景<br>没有场景，三要素都是成本<br>有了场景，三要素才变成资产<br>产品经理的核心价值：找到场景，让三要素产生商业价值'}
-  ]},
-  {id:10,name:'面试实战与行为问题',desc:'AI PM面试的行为问题和项目表达技巧',qIds:[19,20,21,24],kps:[
-    {title:'面试官核心验证三件事',content:'1. <strong>真正参与过AI项目</strong>：不是旁观者，是决策者<br>2. <strong>能把AI技术能力和业务目标打通</strong>：不是只会术语，能说清技术如何服务业务<br>3. <strong>思维方式匹配不确定性</strong>：AI项目充满不确定性，面试官要看你是否能驾驭'},
-    {title:'三大致命失误',content:'1. <strong>术语堆砌</strong>：追问就答不上来。面试官一深挖就露馅<br>2. <strong>有结果没过程</strong>：说不出中间困难。只讲成功不讲挑战，缺乏深度<br>3. <strong>不认真准备行为问题</strong>：行为问题占面试50%+，很多人却只准备技术题'},
-    {title:'STAR法则升级版',content:'<strong>Situation+Task+Action+Result</strong><br>AI面试还需加两个维度：<br><strong>决策逻辑</strong>：为什么做这个决定？当时的权衡是什么？<br><strong>如果重来</strong>：现在回头看，你会怎么做？体现了什么方法论？<br>升级版=STAR+DL（Decision Logic）+WR（What if Redo）'},
-    {title:'行为问题准备要点',content:'<strong>必须说自己的决策</strong>：非团队失误，非环境因素<br><strong>分析原因</strong>：决策时的信息、判断逻辑、盲区<br><strong>提炼方法论</strong>：从具体事件中抽象出可复用的原则<br><strong>后续应用</strong>：这个方法论在后续项目中如何应用<br>关键：体现成长性，不是展示完美'},
-    {title:'面试高频题分类',content:'<strong>技术理解25题</strong>：模型原理、技术选型、效果评估<br><strong>产品设计20题</strong>：需求分析、场景评估、容错设计<br><strong>项目经验15题</strong>：项目复盘、困难克服、数据闭环<br><strong>行为压力10题</strong>：失败决策、团队冲突、不确定性应对<br><strong>行业趋势10题</strong>：技术发展、商业前景、岗位认知'}
-  ]},
-  {id:11,name:'AI Agent落地实战',desc:'AI Agent的设计方法论和商业化路径',qIds:[10,28],kps:[
-    {title:'Agent项目失败五大原因',content:'1. <strong>技术驱动幻觉</strong>：拿锤子找钉子，先有技术再找场景<br>2. <strong>场景颗粒度失配</strong>：场景太大做不深，太小不值得做<br>3. <strong>价值闭环缺失</strong>：Agent做了很多事但没产生可量化的价值<br>4. <strong>人机协作设计失败</strong>：没有设计好人在什么环节介入<br>5. <strong>数据飞轮未建立</strong>：Agent使用数据没有回流优化模型'},
-    {title:'20-60-20法则',content:'<strong>前20%人定义框架</strong>：人设定目标、约束和评估标准<br><strong>中60%AI生成</strong>：AI在框架内自主执行<br><strong>后20%人做价值判断</strong>：人审核AI输出，决定是否采纳<br>关键：不是让人做20%的工作，而是让人做100%的决策，AI做60%的执行'},
-    {title:'多级Agent架构',content:'<strong>初级AI处理80%常规</strong>：标准化的、低风险的任务<br><strong>复杂触发专家模型</strong>：非常规任务路由到专业模型<br><strong>争议转人工</strong>：AI无法判断的场景由人决策<br><strong>知识图谱持续优化</strong>：每次人工处理的结果回流到知识库<br>设计原则：每一级都有明确的升级触发条件'},
-    {title:'行业落地高价值场景',content:'<strong>制造业AI质检</strong>：8万片/天，≥99.59%准确率<br><strong>金融风控</strong>：6小时→8分钟审批<br><strong>医疗慢病管理</strong>：依从性+35%<br><strong>供应链调度</strong>：周转率3.2倍提升<br><strong>研发编码</strong>：效率+40%<br>共同特征：痛点真实+AI不可替代+商业闭环可量化'},
-    {title:'产品是总结出来的不是设计出来的',content:'<strong>先做解决方案，从10个中总结出系统</strong><br>不要一上来就设计完美的Agent系统<br>正确路径：<br>1. 先做单点解决方案验证场景<br>2. 从多个解决方案中抽象共性<br>3. 将共性沉淀为系统框架<br>4. 系统框架支撑新的解决方案快速落地'}
-  ]}
+  {id:1,name:'AI产业结构与PM定位',desc:'理解AI产业链各环节及PM的定位与价值',qIds:[25,26,27],why:'在入行之前，你得先搞清楚AI产业长什么样，你在哪个位置，你的价值在哪里。',content:'<div class="section-block"><div class="section-label"><span class="dot"></span>核心概念</div><div class="section-content"><p>AI产业像一座大楼。<strong>一楼是基础平台</strong>——提供算力、算法框架的公司，比如做GPU的英伟达、做深度学习框架的百度飞桨。<strong>二楼是AI+行业</strong>——用AI技术创造新业务的公司，比如智能客服公司、AI外呼公司。<strong>三楼是行业+AI</strong>——本来就有行业积累，用AI赋能的公司，比如智能家居、智能车载。</p><p>你在哪一层，决定了你需要什么能力。一楼的PM要懂底层技术框架；二楼的PM要擅长需求挖掘和项目管理；三楼的PM要深谙行业理解。</p><p>AI产品经理还有个"真假"问题。有人拆了200份AI PM的招聘JD，发现<em>71%的岗位其实不需要你真懂AI</em>——它们要么是传统PM加了AI标签蹭热度，要么只需要你做"翻译官"把需求翻译给技术团队。怎么识别真AI PM？看JD里有没有"模型评估""badcase分析""技术方案评审"这些词。有，就是真AI PM。</p><p>还有一个残酷真相：<em>行业know-how比技术深度更能决定你的薪资上限</em>。金融、医疗、自动驾驶的AI PM薪资中位数比泛AIGC高出50%。因为一个懂金融风控逻辑的PM，3个月培养不出来；但一个只会写Prompt的PM，市面上一抓一大把。</p></div></div><div class="section-block"><div class="section-label"><span class="dot"></span>真实案例</div><div class="section-content"><p>京东云言犀智能客服系统迭代时，产品经理需要同时优化三个变量：标注数据质量（准确率）、模型结构（从BERT迁移到GPT-3.5）、业务场景适配（金融vs零售）。这三个变量的耦合度远超传统产品，<em>70%的迭代时间花在解决数据漂移问题上</em>，只有30%用于功能开发。</p></div></div>',think:['如果你现在转行做AI PM，你现有的行业经验在AI产业三层模型中属于哪一层？怎么利用？','你觉得"真AI PM"和"半AI PM"哪个更适合你当前阶段？为什么？'],memory:['AI产业三层：基础平台→AI+行业→行业+AI','71%的AI PM岗位不需要真懂AI，识别看"模型评估/badcase分析"','行业know-how比技术深度更值钱，薪资差距50%','AI PM核心差异：概率思维、数据闭环、技术边界判断']},
+  {id:2,name:'系统化思维与物理思维',desc:'用系统思维和物理思维分析AI产品问题',qIds:[22],why:'AI产品复杂度极高，如果没有系统化思维，你会被细节淹没。这是最底层的元能力。',content:'<div class="section-block"><div class="section-label"><span class="dot"></span>核心概念</div><div class="section-content"><p>蜗牛老师（图灵机器人产品负责人，16年经验）说了一句话：<em>用简单模拟复杂，不用复杂追求复杂</em>。</p><p>什么意思？当你面对一个复杂问题时，不要试图一次性理解所有细节。先找到最核心的子系统，理解它，再逐步叠加条件。</p><p>这就像物理学。物理学家不会一上来就研究真实世界的所有摩擦力、空气阻力。他们先研究"真空中的球形鸡"——最简化的模型，抓住主要矛盾，再逐步加入复杂条件。</p><p>具体怎么做？用"最小子系统法"：不断去掉弱关联的子系统，直到剩下的子系统之间联系极强——这就是核心框架。<em>系统框架不是事实，是我们用来解释事实的理论</em>。</p><p>还有一个关键区分：经验vs方法。<em>经验易学易用过时快，方法难学但泛用性强</em>。判断标准很简单：能不能跨场景使用？柯达的失败经验只能用在相机行业，但"最小子系统法"可以用在任何行业。</p></div></div><div class="section-block"><div class="section-label"><span class="dot"></span>真实案例</div><div class="section-content"><p>柯达是怎么被打败的？大多数人会说"数码相机"。但仔细分析：柯达1975年就发明了数码相机！真正打败柯达的是<em>打印机</em>——即拍即打革新了冲洗业务。用物理思维分析：蒸发掉所有相同点后，柯达的核心业务不是"相机"，是"影像冲洗"。打印机直接颠覆了冲洗这个最小子系统。</p><p>另一个例子：iPhone vs 诺基亚。蒸发掉所有相同点（都能打电话、发短信、上网），区别只剩一个——<em>物理键盘vs虚拟键盘（多点触控）</em>。诺基亚的物理键盘是强关联子系统，它锁死了手机形态；iPhone去掉物理键盘后，整个产品形态被释放了。</p></div></div>',think:['用最小子系统法分析你现在做的产品/项目，核心子系统是什么？去掉它还成立吗？','你工作中有哪些是"经验"，哪些是"方法"？怎么把经验提炼成方法？'],memory:['用简单模拟复杂，不用复杂追求复杂','最小子系统法：不断去掉弱关联，直到子系统间联系极强','经验易学易用过时快，方法难学但泛用性强','系统框架不是事实，是用来解释事实的理论']},
+  {id:3,name:'四大AI思维与心力四力',desc:'掌握AI产品经理的四大思维模型和心力框架',qIds:[23,27],why:'思维模型决定你看到什么机会、做什么选择。AI时代的思维和传统产品完全不同。',content:'<div class="section-block"><div class="section-label"><span class="dot"></span>核心概念</div><div class="section-content"><p>连诗路（《AI赋能》作者）总结了四种AI产品经理独有的思维方式：</p><p><strong>多样化思维</strong>——多角度考察同一个需求。比如智能电视，从年轻人角度是娱乐中心，从老年人角度是戏曲播放器，从厂商角度是数据入口。同一个产品，不同角度看到完全不同的需求。</p><p><strong>差异化思维</strong>——在行业内做到独树一帜。注意，差异化可能以成本为代价。商汤科技选择纵向穿透（人脸识别→物品识别→安防/银行/新零售），每深入一个行业都需要大量投入，但一旦建立壁垒，竞争对手很难复制。</p><p><strong>穿透思维</strong>——AI技术最大的特点就是跨领域能力。语音识别公司不能只做识别，要横向穿透到语义理解（光识别出文字不够，要理解意思）。也可以纵向穿透：把一项技术在一个行业里做深做透。</p><p><strong>大道思维</strong>——选的赛道要足够长、足够宽。开一家杂货店是生意，开一千家店是大道。<em>最优商业模式：让竞争对手最赚钱的东西到你这里没办法赚钱，你赚他想象不到的钱</em>。</p><p>心力四力是连诗路对产品经理"内功"的总结：</p><p><strong>认知力</strong>——辨别真需求vs伪需求的能力。智能灯泡用App开灯就是伪需求——效率不如传统开关。辨别标准：技术能否稳定支持+体验是否超越原产品数倍。</p><p><strong>方法论力</strong>——在困境中磨炼出来的能力。淘宝战胜易趣，不是因为淘宝更聪明，是因为在"商家从少到多"的困境中磨出了方法论。</p><p><strong>迭代力</strong>——初心不动、随机而动。市场在变，用户在变，19年前的裁缝店思路不适用于2019年的电商。但核心使命不能变，变得是方法。</p><p><strong>验证力</strong>——知行合一。不是"我觉得方向对"，而是从用户增长数据、商业指标中验证。</p></div></div><div class="section-block"><div class="section-label"><span class="dot"></span>真实案例</div><div class="section-content"><p>智能电视的穿透思维案例：某电视厂商最初做语音遥控——用语音代替遥控器按键。然后发现白天在家看电视的大多是老年人，于是针对老年人优化戏曲内容。再进一步，加入MEMC画质增强技术，让戏曲画面更流畅。从<em>语音遥控→画质优化→老年内容</em>，这就是纵向穿透。</p><p>淘宝vs易趣的方法论力案例：易趣是外资背景，用成熟市场的方法论运营中国电商；淘宝从零开始，在"商家不愿来"的困境中摸索出了免费开店+支付宝担保交易的方法论。<em>困境中磨出来的方法论，比成熟市场搬过来的更扎实</em>。</p></div></div>',think:['你现在做的产品/项目，用穿透思维还能延伸到什么场景？','回顾你最近一次失败，是认知力、方法论力、迭代力还是验证力的短板？'],memory:['四大思维：多样化（多角度）/ 差异化（独树一帜）/ 穿透（跨领域迁移）/ 大道（赛道够长够宽）','心力四力：认知力（辨真伪）/ 方法论力（困境中练）/ 迭代力（初心不动随机而动）/ 验证力（知行合一）','伪需求辨别：技术能否稳定支持+体验是否超越原产品数倍','成功过的PM更容易把"想象的需求"当真实需求']},
+  {id:4,name:'可演进性与盖尔定律',desc:'理解产品可演进性设计原则和盖尔定律',qIds:[22],why:'90%的AI产品失败是因为"直奔主题"。这个板块教你如何避免这个坑。',content:'<div class="section-block"><div class="section-label"><span class="dot"></span>核心概念</div><div class="section-content"><p>盖尔定律说：<em>一个切实可行的复杂系统，势必从很多个切实可行的简单系统发展而来</em>。从一开始就不切实可行的系统，后面的修修补补也无法让它切实可行。</p><p>翻译成大白话：别想一步到位。先做一个能跑的简单系统，再逐步变复杂。</p><p>这和大多数人的直觉相反。很多团队一上来就想做"AI投资研究系统""AI医疗诊断系统"——直奔主题，结果90%都失败了。</p><p>正确的做法是什么？鲍捷博士（文因互联CEO）提出了AI产品交付四层：<strong>零件→工具→解决方案→系统</strong>。先做零件（一个能用的功能），再把零件组合成工具，再把工具组合成解决方案，最后从多个解决方案中总结出系统。<em>好的产品是总结出来的，不是设计出来的</em>。</p><p>还有一个关键概念：<em>AI是蛋糕上的樱桃，基础业务系统才是蛋糕本身</em>。没有蛋糕，樱桃放哪？很多AI产品失败，不是因为AI不好，是因为没有基础业务系统。</p><p>中间节点管理也很重要。最大风险不是技术不行，是耐心耗尽前能否达到中间节点。每个中间节点都要有可衡量的成果，让团队看到进展。</p><p>康威定律也值得记住：产品结构映射团队结构。可演化的产品需要可演化的团队。如果你的团队是刚性的，你的产品也不可避免是刚性的。</p></div></div><div class="section-block"><div class="section-label"><span class="dot"></span>真实案例</div><div class="section-content"><p>雅虎不是一开始就做门户的。它从分类目录开始——就是简单的网页链接整理。这个简单系统切实可行，用户真的在用。然后逐步加入搜索、邮件、新闻，最终成为门户。AT&T花了600亿想一步到位做门户，失败了。</p><p>Pinterest的故事更有意思。它最初想做电商导购，失败了。然后转向图片分享，做大了。再回归导购，这次成功了。<em>先做解决方案（图片分享），从多个解决方案中总结出系统（导购+分享+购买闭环）</em>。</p><p>出门问问也是：先做语音搜索工具（零件），再做智能手表（工具），再做车载系统（解决方案），最后做全场景语音交互（系统）。每个阶段都是上一个阶段的自然延伸。</p></div></div>',think:['如果你现在要做一款AI产品，最简单的"零件"是什么？能不能在一周内做出来？','你见过哪些"直奔主题"失败的AI产品？如果用可演进性思维，应该怎么做？'],memory:['盖尔定律：复杂系统必须从切实可行的简单系统开始','交付四层：零件→工具→解决方案→系统','AI是蛋糕上的樱桃，基础业务系统才是蛋糕','最大风险不是技术，是耐心耗尽前能否达到中间节点','好的产品是总结出来的，不是设计出来的']},
+  {id:5,name:'需求发现与场景评估',desc:'掌握AI产品需求发现和场景评估方法论',qIds:[9,11,17,23],why:'AI产品最怕"拿着锤子找钉子"。这个板块教你如何找到真正值得做的场景。',content:'<div class="section-block"><div class="section-label"><span class="dot"></span>核心概念</div><div class="section-content"><p>找需求有六种数据挖掘方法，但不用死记。核心思路就一个：从数据中发现用户行为的隐藏模式。</p><p><strong>关联分析</strong>——发现"买了A的人也买B"。最经典的例子是沃尔玛的"尿布与啤酒"：年轻爸爸被派去买尿布，顺手买啤酒。这个发现让两种商品放在一起，销量都涨了。</p><p><strong>序列发现</strong>——发现"先做A的人之后会做B"。会员先买婴儿用品，半年后买幼儿用品——这就是序列模式，可以提前推荐。</p><p><strong>聚类分析</strong>——把用户自动分组。不是你事先定义"高端用户""低端用户"，而是让算法自己发现用户自然分成了几群。</p><p><strong>分类</strong>——基于已知规则给新数据打标签。垃圾邮件过滤就是最典型的分类。</p><p><strong>偏差检测</strong>——发现异常值。某个用户突然大额消费，可能是盗刷，也可能是真实需求——异常值里藏着需求。</p><p><strong>预测</strong>——基于历史数据预测未来。电力需求预测、物流调配、销售预测。</p><p>找到需求后，怎么判断这个场景值不值得做？四个条件：有大量数据、体现个性化需求、用户能反馈结果、技术可实现且成本可控。缺一个都不行。</p><p>还有个黄金场景识别三法则：<em>痛点真实性</em>（客户是否已经在用低效方式解决？）、<em>AI不可替代性</em>（去掉AI后方案是否完全失效？）、<em>商业闭环可量化</em>（3个月内能算出ROI吗？）。</p><p>AI产品有个反直觉的原则：<em>不要100%解决，抓住主要场景痛点即可</em>。分类规则直接影响模型效果——分类太细数据少，分类太大有歧义数据混入。这是PM的核心决策。</p></div></div><div class="section-block"><div class="section-label"><span class="dot"></span>真实案例</div><div class="section-content"><p>某AI客服团队遇到一个问题：用户问"我的订单到哪了"，系统总是回答不好。用偏差检测分析发现，<em>80%的问询集中在3个场景</em>：物流查询、退换货、优惠券使用。于是PM决定只做这3个场景的精准回答，其他场景转人工。结果：自动解决率从40%提升到75%，用户满意度反而更高——因为回答更准了。</p></div></div>',think:['用黄金场景三法则评估你身边的一个AI产品，它是黄金场景吗？','为什么"不要100%解决"反而效果更好？这和传统产品思维有什么不同？'],memory:['数据挖掘6类：关联/序列/聚类/分类/偏差/预测','好场景4条件：有数据/有个性化/有反馈/技术可行','黄金场景三法则：痛点真实/AI不可替代/商业可量化','不要100%解决，分类规则是PM的核心决策','AI产品从"人工智障"开始，直奔主题90%失败']},
+  {id:6,name:'AI技术知识速查',desc:'AI产品经理必须了解的核心技术概念',qIds:[1],why:'AI PM不需要会写代码，但必须理解技术原理，否则无法做技术决策。',content:'<div class="section-block"><div class="section-label"><span class="dot"></span>核心概念</div><div class="section-content"><p>先说深度学习的5个核心算法，用最简单的方式理解：</p><p><strong>CNN（卷积神经网络）</strong>——像人眼一样看图。先看局部特征（边缘、纹理），再组合成整体（脸、车）。一层层提取：第一层认线条，第二层认形状，第三层认物体。</p><p><strong>RNN（循环神经网络）</strong>——有记忆的网络。读一句话时，它会把前面词的意思"记住"，带到后面的理解中。但有个致命问题：短期记忆——太长的句子，前面的内容就忘了。</p><p><strong>LSTM（长短期记忆网络）</strong>——RNN的升级版，加了"门"机制。想象三个门卫：遗忘门（决定忘掉什么）、输入门（决定记住什么）、输出门（决定输出什么）。这样就能记住长距离的依赖关系了。</p><p><strong>GANs（生成对抗网络）</strong>——两个网络互相博弈。生成器负责造假，判别器负责鉴别。生成器越造越真，判别器越鉴越严，最终生成器能造出以假乱真的内容。</p><p><strong>RL（强化学习）</strong>——通过试错学习。就像训练狗：做对了给奖励，做错了没奖励。AlphaGo就是用强化学习，自己和自己下了几千万盘棋，最终战胜人类。</p><p>再说语音交互的指标体系——这是AI PM必须懂的：</p><p>ASR（语音识别）看WER（词错误率）和SER（句错误率）。WER 5%意味着每20个词错1个，听起来还行，但在客服场景可能意味着关键信息识别错误。</p><p>对话系统看CPS（平均对话轮数）和求助人工比例。CPS越高说明用户愿意聊，但太高也可能说明AI没解决问题。求助人工比例越低越好，但降到0不现实——关键是把比例降到商业可行。</p><p>最后记住一个关键洞察：<em>NLP是AI发展的核心瓶颈</em>。深度学习对语音和图像识别的提升是10-20%，但对NLP只有1-2%。因为语言是人类近几千年才发展出来的符号能力，和哺乳动物几百万年进化出来的视觉听觉能力本质不同。</p></div></div><div class="section-block"><div class="section-label"><span class="dot"></span>真实案例</div><div class="section-content"><p>某智能音箱团队发现唤醒率只有92%，用户抱怨"叫它不应"。PM分析后发现：误唤醒率和唤醒率是矛盾的——提高唤醒率，误唤醒也增加（半夜突然说话）。最终方案：<em>唤醒词从2音节改为3音节</em>（"小爱同学"比"小爱"误唤醒率低70%），同时优化远场拾音算法。唤醒率提升到97%，误唤醒率反而下降。</p></div></div>',think:['如果你要做一个智能客服产品，WER 5%够用吗？什么场景下不够？','为什么NLP是AI瓶颈？这对AI PM的产品设计有什么影响？'],memory:['CNN看图、RNN记序列、LSTM长记忆、GANs造假、RL试错','语音指标：WER/SER（识别）、CPS（对话）、求助人工率（效果）','NLP是AI核心瓶颈，提升幅度远低于语音/图像','唤醒词音节长度直接影响误唤醒率']},
+  {id:7,name:'大模型技术选型',desc:'大模型技术选型的决策框架和实践方法',qIds:[2,3,5,6],why:'大模型时代，技术选型是AI PM最重要的决策之一。选错了，成本失控、效果不达标。',content:'<div class="section-block"><div class="section-label"><span class="dot"></span>核心概念</div><div class="section-content"><p>大模型技术选型，核心是回答一个问题：你的产品需要模型做什么？</p><p>如果只是让模型按你的要求回答问题——用<strong>Prompt Engineering</strong>就够了。成本最低，不需要改模型，只要写好提示词。比如"你是一个有10年经验的金融分析师，请用非技术语言解释这个概念"。</p><p>如果需要模型参考最新资料回答——用<strong>RAG</strong>。想象考试：纯大模型=闭卷考试，RAG=开卷考试。RAG先从知识库中检索相关文档，再基于文档生成回答。好处是答案可溯源、信息可更新。代价是需要向量数据库（Milvus/FAISS）和检索策略设计。</p><p>如果需要模型在某个领域变得专业——用<strong>Fine-tuning</strong>。相当于考前强化培训。需要大量标注数据和计算资源，成本最高。但效果最好——模型的行为、风格、专业度都会改变。</p><p><strong>LoRA</strong>是Fine-tuning的平价版。只更新模型中很少的参数，成本大幅降低，效果也不错。适合预算有限但需要领域适配的场景。</p><p>还有两个重要的成本控制技术：<strong>MoE</strong>（混合专家系统）把大模型拆成多个小专家，按需调用，节省算力但路由策略复杂；<strong>量化</strong>（4bit/8bit）把模型参数从32位压缩到4位或8位，推理成本降50-75%，精度损失通常不到2%。</p><p>最关键的决策：RAG vs Fine-tuning。简单记：<em>需要最新信息+可溯源→RAG；需要改模型行为+领域术语→Fine-tuning</em>。实际项目中，最好的方案往往是两者结合——先用Fine-tuning让模型懂行业，再用RAG让它能查最新资料。</p><p>还要注意数据漂移和模型漂移。数据漂移=用户行为变了（比如疫情后消费习惯大变），用PSI指标监控。模型漂移=模型效果随时间下降，需要实时跟踪核心指标，定期重训练。</p></div></div><div class="section-block"><div class="section-label"><span class="dot"></span>真实案例</div><div class="section-content"><p>招商证券做AI编码助手，选了私有化部署+Fine-tuning方案。为什么不用RAG？因为<em>代码生成需要模型"内化"编程风格和公司代码规范</em>，RAG只能检索参考，不能改变模型行为。结果：开发效率提升40%，代码错误率下降30%。</p><p>某制造业RAG平台，用端侧+云侧混合部署：简单的高频查询用端侧轻量模型处理（快、便宜），复杂问题才调云端大模型（贵但强）。单客户月均推理成本从2000元降到300元以内，年客单价稳定在8万。</p></div></div>',think:['如果你做一个"AI法律顾问"产品，用RAG还是Fine-tuning？还是两者结合？为什么？','数据漂移在你的业务场景中可能怎么表现？怎么提前发现？'],memory:['Prompt Engineering=写好指令，RAG=开卷考试，Fine-tuning=考前强化培训','RAG vs Fine-tuning：需最新信息→RAG，需改行为→Fine-tuning，最好结合','LoRA=平价版Fine-tuning，量化=压缩模型降成本','数据漂移（输入变了）和模型漂移（效果降了）必须持续监控']},
+  {id:8,name:'模型幻觉与容错设计',desc:'AI产品容错机制设计的核心方法论',qIds:[4,8,29],why:'大模型会"一本正经地胡说八道"，这是AI产品最大的风险。不管理幻觉，产品就不可能上线。',content:'<div class="section-block"><div class="section-label"><span class="dot"></span>核心概念</div><div class="section-content"><p>模型幻觉就是：大模型生成的内容看起来很合理，但其实是错的。比如AI告诉你"爱因斯坦在1955年获得了诺贝尔奖"——听起来像真的，但他实际是1921年获得的。</p><p>为什么会产生幻觉？因为大模型的本质是"预测下一个词"，<em>它追求的是"看起来合理"，不是"事实正确"</em>。它不知道自己在说什么，只是在统计意义上选择最可能的下一个词。</p><p>怎么管理幻觉？不是消除它（目前做不到），而是控制它的影响。</p><p>产品设计层面三件套：<strong>置信度展示</strong>（告诉用户AI有多确定）、<strong>人工复核通道</strong>（不确定的转人工）、<strong>免责声明</strong>（明确AI可能出错）。</p><p>技术层面三件套：<strong>RAG检索增强</strong>（让AI基于真实文档回答，减少编造）、<strong>规则引擎兜底</strong>（关键场景用硬规则而非AI判断）、<strong>多模型交叉验证</strong>（两个AI都同意才输出）。</p><p>还有一个"反脆弱设计"的思路：不是让AI更强，而是让系统在AI出错时也不崩。比如金融风控：IF {AI输出置信度<85%} THEN {转人工审核}；IF {涉及用户生命财产安全} THEN {强制双AI交叉验证}。这样即使AI偶尔出错，也不会造成灾难性后果。</p><p>记住：Chatbot技术已经ready了，缺的不是技术，是在正确场景使用。<em>产品经理要评估的是：是没有落地条件，还是没有落地想象力？</em></p></div></div><div class="section-block"><div class="section-label"><span class="dot"></span>真实案例</div><div class="section-content"><p>某医疗AI产品，临床采纳率只有38%。原因：医生不信任AI——AI给出诊断建议但没有解释为什么，医生不敢用。后来PM加了"置信度展示+推理过程展示+一键转人工"三个功能，<em>临床采纳率从38%提升到81%</em>。医生说："我不需要AI100%正确，我需要知道它有多确定，以及我能随时接管。"</p><p>某社交平台因为没内置内容审核模块，被处以全年营收4%的罚款。教训：<em>AI产品的伦理设计不是锦上添花，是法律底线</em>。</p></div></div>',think:['如果你做一个AI教育产品（给小学生辅导数学），幻觉管理策略应该怎么设计？','"反脆弱设计"和"容错设计"有什么区别？哪个更适合AI产品？'],memory:['幻觉=一本正经地胡说八道，本质是模型追求"看起来合理"而非"事实正确"','产品三件套：置信度展示+人工复核+免责声明','技术三件套：RAG+规则引擎+多模型交叉验证','反脆弱设计：AI出错时系统也不崩','医疗AI采纳率案例：38%→81%，关键是让用户知道AI有多确定']},
+  {id:9,name:'商业化落地与成本控制',desc:'AI产品商业化策略和成本控制方法',qIds:[12,13,14,15,16,18],why:'67%的AI创新项目因为商业闭环缺失而失败。技术再好，赚不到钱就是零。',content:'<div class="section-block"><div class="section-label"><span class="dot"></span>核心概念</div><div class="section-content"><p>AI产品从Demo到规模化营收，必须突破三个卡点：</p><p><strong>第一个卡点：场景闭环</strong>。大部分AI Demo只能解决单点碎片化痛点，无法融入用户的核心工作流。用户用完即走，没有持续付费的理由。比如AI笔记工具只能生成内容，但用户写完还要跳到石墨做协作、跳到飞书排日程——产品只覆盖了用户全流程10%的环节。反面教材：通义灵码为什么付费转化率高？因为它在IDE里打通了"需求拆解-代码生成-实时调试-安全漏洞检测-一键部署"全链路，开发者不用在多个工具间反复横跳。</p><p><strong>第二个卡点：单位经济模型</strong>。有用户有付费，但越卖越亏。一个功能单次调用大模型成本0.2元，用户日均使用100次，月成本600元，但产品月费只定了29元——永远跑不通盈利模型。<em>AI客服单次交互成本必须低于人工客服的30%才具备替代价值</em>。</p><p><strong>第三个卡点：规模化交付</strong>。每个客户都要定制，无法标准化交付，团队被定制需求拖垮。解决方案：端侧+云侧混合部署，简单高频查询用端侧轻量模型，复杂问题才调云端大模型。</p><p>B端和C端的商业化策略完全不同。B端按成果付费，续费率超80%，关键是ROI可视化——客户要看到"用了你的AI省了多少钱"。C端订阅制，付费率只有1-4%，关键是用户规模和社交传播。定价逻辑也不同：B端按节省的人力成本定价，C端按情绪价值和效率提升定价。</p></div></div><div class="section-block"><div class="section-label"><span class="dot"></span>真实案例</div><div class="section-content"><p>某制造业RAG平台，针对工厂客户做了"端侧+云侧"混合部署：简单高频查询用端侧轻量模型（快、便宜），复杂问题调云端大模型（贵但强）。同时优化了文档分片与召回策略。<em>单客户月均推理成本从2000元降到300元以内</em>，年客单价稳定在8万。这个经济模型才跑得通。</p><p>反面案例：2025-2026年大量倒闭的泛娱乐AI工具，靠免费、无限制调用大模型换流量，短期用户暴涨，但推理成本完全失控，融资烧完直接关停。</p></div></div>',think:['算一算：如果一个AI客服产品，单次交互成本0.1元，日均10万次调用，月费定多少才能跑通经济模型？','为什么B端AI产品"按成果付费"比"按功能付费"更容易成交？'],memory:['商业化3卡点：场景闭环/单位经济模型/规模化交付','AI客服单次交互成本需低于人工30%才具替代价值','B端=按成果付费+ROI可视化，C端=订阅制+社交传播','端侧+云侧混合部署：推理成本从2000→300元/月','67%的AI项目因商业闭环缺失失败，不是技术不行']},
+  {id:10,name:'面试实战与行为问题',desc:'AI PM面试的行为问题和项目表达技巧',qIds:[19,20,21,24],why:'AI PM面试和传统PM面试完全不同，面试官往往技术出身，能一眼看穿你是"背答案"还是"真正做过"。',content:'<div class="section-block"><div class="section-label"><span class="dot"></span>核心概念</div><div class="section-content"><p>AI PM面试官核心验证三件事：你有没有真正参与过AI项目（不是旁观者）、你能不能把AI技术和业务目标打通（不是堆术语）、你的思维方式是否匹配AI项目的不确定性。</p><p>三大致命失误：</p><p><strong>术语堆砌</strong>——说了一堆ReAct/CoT/MCP/A2A，但追问"你们项目里具体怎么用的"就答不上来。面试官（往往技术出身）立刻判断你在背AI术语。</p><p><strong>有结果没过程</strong>——"效果提升了30%"，但说不出中间遇到的最大困难是什么、为什么这么选型、如果重来会怎么做。面试官会怀疑项目真实性。</p><p><strong>不认真准备行为问题</strong>——"你讲讲工作中的失败经历"，回答"没有特别失败的经历"或推给"团队失误"。这告诉面试官：你不会做项目复盘，自我认知深度不够。</p><p>面试准备的核心不是背答案，而是建立一套真实、可验证的面试认知体系。<em>每个项目经历都要准备好：你做了什么决策？为什么这么选？如果重来你会怎么做？中间最大的困难是什么？</em></p></div></div><div class="section-block"><div class="section-label"><span class="dot"></span>真实案例</div><div class="section-content"><p>一个候选人面试时说"我推动了RAG系统上线，效果提升了20%"。面试官追问："这个20%是怎么测出来的？"候选人答不上来——因为他只参与了项目，没有参与指标设计。正确的回答应该是：<em>"我们定义了3个核心指标：回答准确率、用户满意度、人工干预率。A/B测试2周，回答准确率从65%提升到85%，人工干预率从40%降到15%。"</em></p></div></div>',think:['用STAR法则描述你最近的一个项目，然后加上"决策逻辑"和"如果重来"两个维度。','你能说出自己做过的3个失败决策吗？每个提炼出什么方法论？'],memory:['面试官验证3件事：真实参与度/技术-业务双向翻译/不确定性应对','三大失误：术语堆砌/有结果没过程/不准备行为问题','每个项目准备：决策逻辑+选型原因+如果重来','面试官往往技术出身，能看穿"背答案"vs"真正做过"']},
+  {id:11,name:'AI Agent落地实战',desc:'AI Agent的设计方法论和商业化路径',qIds:[10,28],why:'Agent是2025-2026年最热的AI产品形态，但失败率极高。这个板块教你如何避开坑。',content:'<div class="section-block"><div class="section-label"><span class="dot"></span>核心概念</div><div class="section-content"><p>AI Agent项目失败的五大原因：</p><p><strong>第一，技术驱动幻觉</strong>——拿着锤子找钉子。团队掌握了先进的大模型技术，就满世界找可以被敲打的问题，而不是先研究客户真正需要什么。一个通用多模态Agent，什么都能做，但没人愿意付费——因为每个客户需要的是深度解决特定问题，不是"什么都能做但都不深"。</p><p><strong>第二，场景颗粒度失配</strong>——要么太泛要么太窄。"智能办公助手"太泛，没人知道它到底帮什么；"自动填表"太窄，价值不够支撑一个产品。黄金颗粒度是：一个具体但有价值的工作流。</p><p><strong>第三，价值闭环缺失</strong>——技术可行但商业不通。Demo很惊艳，但客户不愿意付费。因为Demo解决的是"技术能不能做"，不是"客户愿不愿意付钱"。</p><p><strong>第四，人机协作设计失败</strong>——要么全自动化要么全人工。医疗AI全自动诊断是合规灾难，全人工又失去了AI的价值。正确做法是<em>20-60-20法则</em>：前20%人定义任务框架，中60%AI生成方案，后20%人做价值判断。</p><p><strong>第五，数据飞轮未建立</strong>——模型无法持续优化。上线后效果持续衰减，因为没有机制把用户反馈转化为训练数据。</p><p>多级Agent架构是当前最成熟的模式：初级AI处理80%常规咨询→复杂问题自动触发专家模型→争议场景无缝转接人工→所有交互生成知识图谱用于持续优化。</p></div></div><div class="section-block"><div class="section-label"><span class="dot"></span>真实案例</div><div class="section-content"><p>某电商客服升级案例：初级AI处理80%的常规咨询（物流查询、退换货政策等），平均响应时间从30秒降到2秒。复杂问题（如"我收到的商品和描述不符怎么办"）自动触发专家模型，生成解决方案建议供人工客服参考。争议场景（如用户情绪激动）无缝转接人工，同时AI已经整理好了对话摘要。所有交互数据进入知识图谱，用于持续优化模型。结果：<em>人工客服工作量减少60%，用户满意度提升25%</em>。</p><p>金融风控Agent案例：某银行将风控模型响应时间从6小时压缩至8分钟。关键不是模型多快，而是产品设计：简单交易实时自动审批，中等风险交易AI给出建议+人工确认，高风险交易强制人工审核+AI辅助分析。</p></div></div>',think:['如果你做一个AI Agent，选什么场景？用黄金场景三法则验证一下。','20-60-20法则在你的工作场景中怎么应用？哪些环节应该人做，哪些应该AI做？'],memory:['Agent失败5原因：锤子找钉子/颗粒度失配/价值闭环缺失/人机协作失败/数据飞轮未建立','20-60-20法则：人定义框架→AI生成→人做判断','多级架构：80%常规AI→复杂触发专家→争议转人工→知识图谱优化','产品是总结出来的不是设计出来的']}
 ];
 
 var SPACED_REPEAT = [1,3,7,14];
@@ -463,7 +393,6 @@ document.querySelectorAll('.tab').forEach(function(t){
     if(t.dataset.tab==='path') renderPaths();
     if(t.dataset.tab==='assess') drawRadar();
     if(t.dataset.tab==='wrong') renderWrongBook();
-    if(t.dataset.tab==='quiz') {}
     updateTopProgress();
   });
 });
@@ -654,6 +583,8 @@ function goToPath(pathId){
   setTimeout(function(){
     var el=document.getElementById('path-detail-'+pathId);
     if(el&&!el.classList.contains('open'))el.classList.add('open');
+    var arrow=document.getElementById('path-arrow-'+pathId);
+    if(arrow)arrow.style.transform='rotate(90deg)';
     el.scrollIntoView({behavior:'smooth',block:'start'});
   },100);
 }
@@ -764,10 +695,7 @@ function clearWrongBook(){
 var pathProgress=load('path-progress')||{};
 PATHS.forEach(function(p){
   if(!pathProgress[p.id]){
-    pathProgress[p.id]={kpStatus:p.kps.map(function(){return'not-started'}),status:'not-started',kpLearned:p.kps.map(function(){return false})}
-  }
-  if(!pathProgress[p.id].kpLearned){
-    pathProgress[p.id].kpLearned=pathProgress[p.id].kpStatus.map(function(s){return s==='mastered'});
+    pathProgress[p.id]={status:'not-started',readSections:{},thinkOpen:false,memoryOpen:false};
   }
 });
 
@@ -775,10 +703,6 @@ function renderPaths(){
   var html='';
   PATHS.forEach(function(p){
     var prog=pathProgress[p.id];
-    var masteredCount=prog.kpStatus.filter(function(s){return s==='mastered'}).length;
-    var learningCount=prog.kpStatus.filter(function(s){return s==='learning'||s==='review'}).length;
-    var pct=Math.round(masteredCount/p.kps.length*100);
-    var barColor=masteredCount===p.kps.length?'var(--green)':learningCount>0?'var(--orange)':'var(--accent)';
     var statusLabel=prog.status==='mastered'?'已掌握':prog.status==='learning'?'学习中':'未开始';
     var badgeClass=prog.status==='mastered'?'badge-mastered':prog.status==='learning'?'badge-learning':'badge-not-started';
 
@@ -787,28 +711,33 @@ function renderPaths(){
     html+='<div class="left"><strong>'+p.name+'</strong><div class="desc">'+p.desc+'</div></div>';
     html+='<span class="kp-arrow" id="path-arrow-'+p.id+'" style="font-size:14px;color:var(--text2);transition:transform .2s">▶</span></div>';
     html+='<div class="path-badges"><span class="badge '+badgeClass+'">'+statusLabel+'</span><span class="badge badge-quiz">关联'+p.qIds.length+'题</span></div>';
-    html+='<div class="path-progress" onclick="togglePath('+p.id+')"><div class="path-progress-bar" style="width:'+pct+'%;background:'+barColor+'"></div></div>';
-    html+='<div class="path-meta" onclick="togglePath('+p.id+')"><span>'+masteredCount+'/'+p.kps.length+' 已掌握</span></div>';
 
     html+='<div class="path-detail" id="path-detail-'+p.id+'">';
-    p.kps.forEach(function(kp,ki){
-      var st=prog.kpStatus[ki];
-      var learned=prog.kpLearned[ki];
-      var dotClass=st==='mastered'?'mastered':st==='learning'||st==='review'?'learning':'not-started';
-      html+='<div class="kp-item">';
-      html+='<div class="kp-header">';
-      html+='<div class="kp-check '+(learned?'checked':'')+'" onclick="event.stopPropagation();toggleKpLearned('+p.id+','+ki+')">'+(learned?'✓':'')+'</div>';
-      html+='<span class="kp-title '+(learned?'learned':'')+'" onclick="event.stopPropagation();toggleKpContent('+p.id+','+ki+')">'+kp.title+'</span>';
-      html+='<button class="ask-ai-btn" onclick="event.stopPropagation();askAiKp('+p.id+','+ki+')">问AI</button>';
-      html+='<span class="kp-arrow" id="kp-arrow-'+p.id+'-'+ki+'" onclick="event.stopPropagation();toggleKpContent('+p.id+','+ki+')">▶</span>';
-      html+='</div>';
-      html+='<div class="kp-content" id="kp-content-'+p.id+'-'+ki+'">'+kp.content+'</div>';
-      html+='</div>';
+
+    html+='<div class="section-block"><div class="section-label" style="color:var(--green)"><span class="dot" style="background:var(--green)"></span>为什么学这个</div><div class="section-content"><p>'+p.why+'</p></div></div>';
+
+    html+=p.content;
+
+    html+='<div style="margin-top:16px">';
+    html+='<button class="collapse-toggle" onclick="toggleCollapse(\'think-'+p.id+'\')"><span class="arrow" id="think-arrow-'+p.id+'">▶</span> 💭 思考题</button>';
+    html+='<div class="collapse-body" id="think-'+p.id+'">';
+    p.think.forEach(function(t,i){
+      html+='<div class="think-item"><strong>'+(i+1)+'.</strong> '+t+'</div>';
     });
+    html+='</div></div>';
+
+    html+='<div style="margin-top:8px">';
+    html+='<button class="collapse-toggle" onclick="toggleCollapse(\'memory-'+p.id+'\')"><span class="arrow" id="memory-arrow-'+p.id+'">▶</span> ✦ 关键记忆点</button>';
+    html+='<div class="collapse-body" id="memory-'+p.id+'">';
+    p.memory.forEach(function(m){
+      html+='<div class="memory-item">'+m+'</div>';
+    });
+    html+='</div></div>';
 
     html+='<div class="path-actions">';
-    html+='<button class="btn btn-green btn-sm" onclick="event.stopPropagation();markPathMastered('+p.id+')">✓ 标记本板块已掌握</button>';
-    html+='<button class="btn btn-primary btn-sm" onclick="event.stopPropagation();goToPathQuiz('+p.id+')">🎯 去面试自测（本板块）</button>';
+    html+='<button class="btn btn-green btn-sm" onclick="event.stopPropagation();markPathMastered('+p.id+')">✓ 标记已掌握</button>';
+    html+='<button class="btn btn-primary btn-sm" onclick="event.stopPropagation();goToPathQuiz('+p.id+')">🎯 去面试自测</button>';
+    html+='<button class="btn btn-outline btn-sm" onclick="event.stopPropagation();askAiPath('+p.id+')">🤖 问AI</button>';
     html+='</div>';
     html+='</div></div>';
   });
@@ -821,42 +750,31 @@ function togglePath(id){
   el.classList.toggle('open');
   if(el.classList.contains('open')){
     arrow.style.transform='rotate(90deg)';
+    if(pathProgress[id].status==='not-started'){
+      pathProgress[id].status='learning';
+      store('path-progress',pathProgress);
+      updateTopProgress();
+    }
   }else{
     arrow.style.transform='rotate(0deg)';
   }
 }
 
-function toggleKpContent(pathId,kpIdx){
-  var el=document.getElementById('kp-content-'+pathId+'-'+kpIdx);
-  var arrow=document.getElementById('kp-arrow-'+pathId+'-'+kpIdx);
+function toggleCollapse(id){
+  var el=document.getElementById(id);
+  var arrowId=id.replace('think-','think-arrow-').replace('memory-','memory-arrow-');
+  var arrow=document.getElementById(arrowId);
   el.classList.toggle('open');
-  if(el.classList.contains('open')){
-    arrow.classList.add('open');
-  }else{
-    arrow.classList.remove('open');
+  if(arrow){
+    if(el.classList.contains('open')){
+      arrow.classList.add('open');
+    }else{
+      arrow.classList.remove('open');
+    }
   }
-}
-
-function toggleKpLearned(pathId,kpIdx){
-  pathProgress[pathId].kpLearned[kpIdx]=!pathProgress[pathId].kpLearned[kpIdx];
-  if(pathProgress[pathId].kpLearned[kpIdx]){
-    pathProgress[pathId].kpStatus[kpIdx]='mastered';
-  }else{
-    pathProgress[pathId].kpStatus[kpIdx]='not-started';
-  }
-  var allMastered=pathProgress[pathId].kpStatus.every(function(s){return s==='mastered'});
-  var anyLearning=pathProgress[pathId].kpStatus.some(function(s){return s==='learning'||s==='review'});
-  pathProgress[pathId].status=allMastered?'mastered':anyLearning?'learning':'not-started';
-  store('path-progress',pathProgress);
-  renderPaths();
-  updateTopProgress();
-  var el=document.getElementById('path-detail-'+pathId);
-  if(el)el.classList.add('open');
 }
 
 function markPathMastered(pathId){
-  pathProgress[pathId].kpStatus=pathProgress[pathId].kpStatus.map(function(){return'mastered'});
-  pathProgress[pathId].kpLearned=pathProgress[pathId].kpLearned.map(function(){return true});
   pathProgress[pathId].status='mastered';
   store('path-progress',pathProgress);
   renderPaths();
@@ -864,6 +782,8 @@ function markPathMastered(pathId){
   showToast('已标记为已掌握！');
   var el=document.getElementById('path-detail-'+pathId);
   if(el)el.classList.add('open');
+  var arrow=document.getElementById('path-arrow-'+pathId);
+  if(arrow)arrow.style.transform='rotate(90deg)';
 }
 
 function goToPathQuiz(pathId){
@@ -887,12 +807,11 @@ function goToPathQuiz(pathId){
   startTimer();
 }
 
-function askAiKp(pathId,kpIdx){
+function askAiPath(pathId){
   var p=PATHS.find(function(x){return x.id===pathId});
   if(!p)return;
-  var kp=p.kps[kpIdx];
-  var prompt='请详细解释AI产品经理中的【'+kp.title+'】，给我举例说明实际应用场景';
-  document.getElementById('ai-modal-title').textContent='问AI：'+kp.title;
+  var prompt='请帮我深入讲解AI产品经理中的【'+p.name+'】，给我举更多实际应用场景和案例，帮我理解核心概念';
+  document.getElementById('ai-modal-title').textContent='问AI：'+p.name;
   document.getElementById('ai-modal-text').value=prompt;
   document.getElementById('ai-modal').classList.add('show');
 }
@@ -951,30 +870,14 @@ function isCheckedToday(){
 }
 
 function getTodayKps(){
-  var learningKps=[];
+  var pool=[];
   PATHS.forEach(function(p){
-    var prog=pathProgress[p.id];
-    p.kps.forEach(function(kp,ki){
-      if(prog.kpStatus[ki]==='learning'||prog.kpStatus[ki]==='review'){
-        learningKps.push({pathId:p.id,pathName:p.name,kp:kp.title,idx:ki,source:p.source});
-      }
+    p.memory.forEach(function(m,mi){
+      pool.push({pathId:p.id,pathName:p.name,kp:m,idx:mi});
     });
   });
-  if(learningKps.length<3){
-    var notStarted=[];
-    PATHS.forEach(function(p){
-      var prog=pathProgress[p.id];
-      p.kps.forEach(function(kp,ki){
-        if(prog.kpStatus[ki]==='not-started'){
-          notStarted.push({pathId:p.id,pathName:p.name,kp:kp.title,idx:ki,source:p.source});
-        }
-      });
-    });
-    learningKps=learningKps.concat(shuffle(notStarted));
-  }
   var seed=hashStr(today());
   var picked=[];
-  var pool=learningKps.length>0?learningKps:PATHS.reduce(function(arr,p){return arr.concat(p.kps.map(function(kp,ki){return{pathId:p.id,pathName:p.name,kp:kp.title,idx:ki,source:p.source}}))},[]);
   for(var i=0;i<3&&i<pool.length;i++){
     picked.push(pool[(seed+i)%pool.length]);
   }
@@ -1017,18 +920,6 @@ function doCheckin(){
   var records=load('checkin-records')||[];
   records.push(today());
   store('checkin-records',records);
-  var kpReview=load('kp-review')||{};
-  var kps=getTodayKps();
-  kps.forEach(function(kp){
-    var key=kp.pathId+'-'+kp.idx;
-    if(!kpReview[key])kpReview[key]={nextDate:today(),level:0};
-    kpReview[key].level=Math.min(kpReview[key].level+1,SPACED_REPEAT.length);
-    var days=SPACED_REPEAT[Math.min(kpReview[key].level,SPACED_REPEAT.length)-1];
-    var d=new Date();
-    d.setDate(d.getDate()+days);
-    kpReview[key].nextDate=d.toISOString().slice(0,10);
-  });
-  store('kp-review',kpReview);
   var btn=document.getElementById('checkin-btn');
   btn.textContent='今日已打卡 ✓';
   btn.disabled=true;
@@ -1060,7 +951,7 @@ function doReset(){
   keys.forEach(function(k){localStorage.removeItem(k)});
   scores={tech:3,product:3,biz:3,data:3,translate:3,agent:3,ethics:3,interview:3};
   pathProgress={};
-  PATHS.forEach(function(p){pathProgress[p.id]={kpStatus:p.kps.map(function(){return'not-started'}),status:'not-started',kpLearned:p.kps.map(function(){return false})}});
+  PATHS.forEach(function(p){pathProgress[p.id]={status:'not-started',readSections:{},thinkOpen:false,memoryOpen:false}});
   renderSliders();
   resetQuiz();
   renderCheckin();
